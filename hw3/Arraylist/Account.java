@@ -1,7 +1,20 @@
 package Arraylist;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Account{
+    private final String LIKE = "You liked ";
+    private final String UNLIKE = "You unliked ";
+    private final String FOLLOWED = "You followed ";
+    private final String UNFOLLOWED = "You unfollowed ";
+    private final String COMMENTED = "You commented ";
+    private final String UNCOMMENTED = "You uncommented ";
+    private final String VIEW = "You viewed "; 
+    private final String BLOCK = "You block ";
+    private final String UNBLOCK = "You unblock ";
+    private final String SHARE = "You share ";
+    private final String MESSAGE = "You send a Message to ";
+
 
     private Integer accountId; 
     private String username; 
@@ -13,6 +26,7 @@ public class Account{
     private ArrayList<Message> inbox = new ArrayList<Message>();
     private ArrayList<Message> outbox = new ArrayList<Message>();
     private ArrayList<Account> blocked = new ArrayList<Account>();
+    private ArrayList<String> history = new ArrayList<String>();
 
     public Account()
     {
@@ -29,6 +43,8 @@ public class Account{
     public void sharePost(Post post)
     {
         posts.add(post); 
+        history.add(SHARE + "post id:" +post.getpostId());
+
     }
 
     public void sharePost(String content)
@@ -36,6 +52,8 @@ public class Account{
         Integer postId = posts.size();
         Post tempPost = new Post(postId+1, this.accountId, content);
         posts.add(tempPost);      
+
+        history.add(SHARE + "post id:" +postId+1);
     }
 
     public void viewPost(Account account, boolean isViewedProfile)
@@ -54,6 +72,8 @@ public class Account{
                              account.getUsername() +": ");
             System.out.println(account.getPosts().get(i).getContent());
         }
+        history.add(VIEW + account.getUsername() + "'s posts");
+
     }
 
     public Like like(Account account, Post post)
@@ -61,30 +81,56 @@ public class Account{
         Like tempLike = new Like(this.getAccountId(), 0, post.getpostId());
         // System.out.println(account.getPosts().get(post.getpostId()-1).getContent());
         account.getPosts().get(post.getpostId()-1).addLike(tempLike);
+
+        history.add(LIKE + account.getUsername() + "'s post id: "+ post.getpostId());
         return tempLike;
     }
 
     public void unlike(Account account, Post post, Like like)
     {
         account.getPosts().get(post.getpostId()-1).getLikes().remove(like);
+
+        history.add(UNLIKE + account.getUsername() + "'s post id: "+ post.getpostId());
     }
 
-    public void unlike(Post post, Like like)
+    private void unlike(Post post, Like like)
     {
         getPosts().get(post.getpostId()-1).getLikes().remove(like);
+        history.add(UNLIKE + getUsername() + "'s post id: "+ post.getpostId());
     }
 
-    public void comment(Account account, Post post, String content)
+    public Comment comment(Account account, Post post, String content)
     {
         Comment tempComment = new Comment(0, accountId, post.getpostId(), content);
         account.getPosts().get(post.getpostId()-1).addComment(tempComment);
 
+        history.add(COMMENTED + account.getUsername() + "'s post id:" 
+                   + account.getPosts().get(tempComment.getPostId()));
+        return tempComment;
+    }
+
+    public void uncomment(Account account, Post post, Comment comment)
+    {
+        account.getPosts().get(post.getpostId()-1).getComments().remove(comment);
+        
+        history.add(UNCOMMENTED + account.getUsername() + "'s post id:" 
+                   + account.getPosts().get(comment.getPostId()));
+    }
+
+    public void uncomment(Post post, Comment comment)
+    {
+        getPosts().get(post.getpostId()-1).getComments().remove(comment);
+        
+        history.add(UNCOMMENTED + getUsername() + "'s post id:" 
+                    + getPosts().get(comment.getPostId()));
     }
 
     public void comment(Account account, Comment comment)
     {
         account.getPosts().get(comment.getPostId()).addComment(comment);
-        
+
+        history.add(COMMENTED + account.getUsername() + "'s post id:" 
+                   + account.getPosts().get(comment.getPostId()));
     }
 
     public void follow(Account account)
@@ -95,12 +141,15 @@ public class Account{
         }        
         following.add(account);
         account.getFollowers().add(this);
+        
+        history.add(FOLLOWED + account.getUsername());
     }
 
     public void unfollow(Account account)
     {
         following.remove(account);
         account.getFollowers().remove(this);
+        history.add(UNFOLLOWED + account.getUsername());
     }
 
     public void sendMessage(Account account, String content)
@@ -116,6 +165,8 @@ public class Account{
                                           content );
 
         sendMessage(account, tempMessage); 
+        history.add(MESSAGE + account.getUsername());
+
     }
 
     public boolean viewProfile(Account account)
@@ -154,6 +205,8 @@ public class Account{
         System.out.println(account.getUsername() + " has " + 
                            account.getPosts().size() +" posts.");
         
+        
+        history.add(VIEW + account.getUsername() + " profile");
         return true;
     }
     public void sendMessage(Account account, Message message)
@@ -161,10 +214,11 @@ public class Account{
         //check Message includes.
         account.getInbox().add(message);
         this.getOutbox().add(message);
+        history.add(MESSAGE + account.getUsername());
     }
 
 
-    public boolean isValidFollowing(Account account)
+    private boolean isValidFollowing(Account account)
     {
         for(Account i : following)
         {
@@ -186,6 +240,7 @@ public class Account{
             System.out.println("Message: "+ getInbox().get(i).getContent());
             System.out.println("---------------------");
         }
+        history.add(VIEW + "inbox messages");
 
     }
     public void viewOutbox(ArrayList<Account> accounts)
@@ -200,6 +255,7 @@ public class Account{
             System.out.println("Message: "+ getOutbox().get(i).getContent());
             System.out.println("---------------------");
         }
+        history.add(VIEW + "outbox messages");
     }
 
     public boolean isBlocked(Account account)
@@ -252,6 +308,7 @@ public class Account{
                 System.out.println("The post has no comments.");
             }
         }
+        history.add(VIEW + targetAccount.getUsername() + "'s posts.");
     }
 
     public boolean isBlockedByAccount(Account account)
@@ -279,8 +336,12 @@ public class Account{
         }
         removeLikeInBlocking(account);
         removeAccountLikeInBlocking(account);
+        removeCommentInBlocking(account);
+        // removeAccountCommentInBlocking(account);
 
-        blocked.add(account);        
+        blocked.add(account);       
+        history.add(BLOCK + account.getUsername());
+ 
     }
 
     public void unblock(Account account)
@@ -288,17 +349,20 @@ public class Account{
         if(isBlocked(account))
         {
             blocked.remove(account);
+            history.add(UNBLOCK + account.getUsername());
         }
     }
     private void removeLikeInBlocking(Account account)
     {
-        for(Post i : account.getPosts())
+        for(int i = 0; i < account.getPosts().size(); i++)
         {
-            if(i.getLikes().size() != 0)
+            if(account.getPosts().get(i).getLikes().size() != 0)
             {
-                for(Like j : i.getLikes())
+                for(int j = 0; j < account.getPosts().get(i).getLikes().size(); j++)
                 {
-                    if(j.getAccountId() == this.getAccountId()) unlike(account, i, j);
+                    if(account.getPosts().get(i).getLikes().get(j).getAccountId() == getAccountId())
+                        account.unlike(account.getPosts().get(i),
+                                  account.getPosts().get(i).getLikes().get(j));
                 }
             }
         }
@@ -318,7 +382,33 @@ public class Account{
             }
         }
     }
-    
+
+    private void removeCommentInBlocking(Account account)
+    {
+        for(int i = 0; i < account.getPosts().size(); i++)
+        {
+            if(account.getPosts().get(i).getComments().size() != 0)
+            {
+                for(int j = 0; j < account.getPosts().get(i).getComments().size(); j++)
+                {
+                    if(account.getPosts().get(i).getComments().get(j).getAccountId() == getAccountId())
+                        account.uncomment(account.getPosts().get(i),
+                                  account.getPosts().get(i).getComments().get(j));
+                }
+            }
+        }
+        // for(Post i : account.getPosts())
+        // {
+        //     if(i.getComments().size() != 0)
+        //     {
+        //         for(Comment j : i.getComments())
+        //         {
+        //             if(j.getAccountId() == this.getAccountId()) uncomment(account, i, j);
+        //         }
+        //     }       
+        // }
+    }
+
     private boolean isInFollowing(Account account)
     {
         for(int i = 0; i < following.size(); i++)
@@ -384,6 +474,11 @@ public class Account{
     public ArrayList<Message> getOutbox()
     {
         return outbox;
+    }
+
+    public ArrayList<String> getHistory()
+    {
+        return history;
     }
 
 }

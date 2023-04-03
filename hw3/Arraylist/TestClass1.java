@@ -19,18 +19,34 @@ public class TestClass1 {
         accounts.add(gokhankaya);
         accounts.add(oguzmutlu);
 
-        // gizemsungu.sharePost(post1);
-        // gizemsungu.follow(gokhankaya);
-        // gizemsungu.viewPost(gizemsungu, isViewedProfile);
-        sibelgulmez.sharePost(post1);
+        gizemsungu.sharePost(post1);
+        gizemsungu.follow(gokhankaya);
+        gizemsungu.viewPost(gizemsungu, true);
+        // sibelgulmez.sharePost(post1);
         gizemsungu.follow(sibelgulmez);
-        gizemsungu.like(sibelgulmez, post1);
-        gizemsungu.viewInteractions(sibelgulmez, accounts);
+
+        // for(int i = 0; i < gizemsungu.getHistory().size(); i++)
+        // {
+        //     System.out.println(gizemsungu.getHistory().get(i));
+        // }
+        // gizemsungu.like(sibelgulmez, post1);
+        // Comment comments = gizemsungu.comment(sibelgulmez, post1, "Hosgeldin");
+        // gizemsungu.viewInteractions(sibelgulmez, accounts);
+        // gizemsungu.block(sibelgulmez);
+        // gizemsungu.unblock(sibelgulmez);
+        // gizemsungu.viewInteractions(sibelgulmez, accounts);
+
+        // gokhankaya.uncomment(sibelgulmez, post1, comments);
+        // gizemsungu.viewInteractions(sibelgulmez, accounts);
+
         System.out.println();
 
-        // gokhankaya.unfollow(gizemsungu);
-        sibelgulmez.block(gizemsungu);
-        gizemsungu.viewInteractions(sibelgulmez, accounts);
+        // // gokhankaya.unfollow(gizemsungu);
+        // sibelgulmez.block(gizemsungu);
+        // gizemsungu.viewInteractions(sibelgulmez, accounts);
+
+
+
         // gizemsungu.viewProfile(gizemsungu);
 
 
