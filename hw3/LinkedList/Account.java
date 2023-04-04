@@ -1,7 +1,8 @@
-package Arraylist;
-import java.util.ArrayList;
+package LinkedList;
 
-public class Account{
+import java.util.LinkedList;
+
+public class Account {
     private final String LIKE = "You liked ";
     private final String UNLIKE = "You unliked ";
     private final String FOLLOWED = "You followed ";
@@ -14,35 +15,34 @@ public class Account{
     private final String SHARE = "You share ";
     private final String MESSAGE = "You send a Message to ";
 
-
     private Integer accountId; 
     private String username; 
     private String birthdate;
     private String location;
-    private ArrayList<Post> posts = new ArrayList<Post>(); 
-    private ArrayList<Account> followers = new ArrayList<Account>();
-    private ArrayList<Account> following = new ArrayList<Account>();
-    private ArrayList<Message> inbox = new ArrayList<Message>();
-    private ArrayList<Message> outbox = new ArrayList<Message>();
-    private ArrayList<Account> blocked = new ArrayList<Account>();
-    private ArrayList<String> history = new ArrayList<String>();
+    private LinkedList<Post> posts = new LinkedList<Post>(); 
+    private LinkedList<Account> followers = new LinkedList<Account>();
+    private LinkedList<Account> following = new LinkedList<Account>();
+    private LinkedList<Message> inbox = new LinkedList<Message>();
+    private LinkedList<Message> outbox = new LinkedList<Message>();
+    private LinkedList<Account> blocked = new LinkedList<Account>();
+    private LinkedList<String> history = new LinkedList<String>();
+
 
     public Account()
     {
-        //intentionally empty
+        //intentionally empty 
     }
 
-    public Account(int accountId, String username, String birthdate, String location)
+    public Account(int accountId, String username, String birthdate, String location )
     {
         this.accountId = accountId;
-        this.username = username; 
+        this.username = username;
         this.birthdate = birthdate;
         this.location = location; 
     }
 
     public int login(int loginAccountId)
     {
-        // System.out.println("Logging into an account (username: "+ this.getUsername() + ")...");
         if(loginAccountId == -1 ) {
             return this.getAccountId();
         }
@@ -63,6 +63,7 @@ public class Account{
 
     public void sharePost(Post post, int loginAccountId)
     {
+        
         if(loginAccountId != this.getAccountId())
         {
             System.out.println("Unable to view profile, Different account or no account currently logged in.");
@@ -88,31 +89,6 @@ public class Account{
         history.add(SHARE + "post id:" +postId+1);
     }
 
-    public void viewPost(Account account, boolean isViewedProfile, int loginAccountId)
-    {
-        if(loginAccountId != this.getAccountId())
-        {
-            System.out.println("Unable to view profile, Different account or no account currently logged in.");
-            return; 
-        }
-
-        if(isBlocked(account) || isBlockedByAccount(account) || !isViewedProfile)
-        {
-            System.out.println("Unable to view Post.");
-            return;
-        }
-
-        System.out.println("Viewing " +account.getUsername()+"'s posts...");
-
-        for(int i = 0; i < account.getPosts().size(); i++)
-        {
-            System.out.print("(Post ID: " +account.getPosts().get(i).getpostId() + ") "+
-                             account.getUsername() +": ");
-            System.out.println(account.getPosts().get(i).getContent());
-        }
-        history.add(VIEW + account.getUsername() + "'s posts");
-    }
-
     public Like like(Account account, Post post, int loginAccountId)
     {
         if(loginAccountId != this.getAccountId())
@@ -121,9 +97,7 @@ public class Account{
             return null; 
         }
         Like tempLike = new Like(this.getAccountId(), 0, post.getpostId());
-        // System.out.println(account.getPosts().get(post.getpostId()-1).getContent());
         account.getPosts().get(post.getpostId()-1).addLike(tempLike);
-
         history.add(LIKE + account.getUsername() + "'s post id: "+ post.getpostId());
         return tempLike;
     }
@@ -145,7 +119,7 @@ public class Account{
         getPosts().get(post.getpostId()-1).getLikes().remove(like);
         history.add(UNLIKE + getUsername() + "'s post id: "+ post.getpostId());
     }
-
+    
     public Comment comment(Account account, Post post, String content, int loginAccountId)
     {
         if(loginAccountId != this.getAccountId())
@@ -211,7 +185,6 @@ public class Account{
         
         history.add(FOLLOWED + account.getUsername());
     }
-
     public void unfollow(Account account, int loginAccountId)
     {
         if(loginAccountId != this.getAccountId())
@@ -293,7 +266,7 @@ public class Account{
         history.add(VIEW + account.getUsername() + " profile");
         return true;
     }
-    
+
     public void sendMessage(Account account, Message message, int loginAccountId)
     {
         if(loginAccountId != this.getAccountId())
@@ -317,7 +290,7 @@ public class Account{
         return true; 
     }
 
-    public void viewInbox(ArrayList<Account> accounts, int loginAccountId)
+    public void viewInbox(LinkedList<Account> accounts, int loginAccountId)
     {
         if(loginAccountId != this.getAccountId())
         {
@@ -337,7 +310,8 @@ public class Account{
         history.add(VIEW + "inbox messages");
 
     }
-    public void viewOutbox(ArrayList<Account> accounts, int loginAccountId)
+
+    public void viewOutbox(LinkedList<Account> accounts, int loginAccountId)
     {
         if(loginAccountId != this.getAccountId())
         {
@@ -357,7 +331,6 @@ public class Account{
         }
         history.add(VIEW + "outbox messages");
     }
-
     public boolean isBlocked(Account account)
     {
         for(int i = 0; i < this.getBlocked().size(); i++)
@@ -367,7 +340,7 @@ public class Account{
         return false; 
     }
 
-    public void viewInteractions(Account targetAccount, ArrayList<Account> accounts, int loginAccountId)
+    public void viewInteractions(Account targetAccount, LinkedList<Account> accounts, int loginAccountId)
     {
         if(loginAccountId != this.getAccountId())
         {
@@ -416,7 +389,6 @@ public class Account{
         }
         history.add(VIEW + targetAccount.getUsername() + "'s posts.");
     }
-
     public boolean isBlockedByAccount(Account account)
     {
         for(int i = 0; i < account.getBlocked().size(); i++)
@@ -538,7 +510,6 @@ public class Account{
         }
         return false; 
     }
-
     public Integer getAccountId()
     {
         return accountId;
@@ -559,38 +530,40 @@ public class Account{
         return location;
     }
 
-    public ArrayList<Post> getPosts()
+    public LinkedList<Post> getPosts()
     {
         return posts;
     }
 
-    public ArrayList<Account> getFollowers()
+    public LinkedList<Account> getFollowers()
     {
         return followers;
     }
 
-    public ArrayList<Account> getFollowing()
+    public LinkedList<Account> getFollowing()
     {
         return following;
     }
 
-    public ArrayList<Account> getBlocked()
+    public LinkedList<Account> getBlocked()
     {
         return this.blocked;
     }
 
-    public ArrayList<Message> getInbox()
+    public LinkedList<Message> getInbox()
     {
         return inbox; 
     }
-    public ArrayList<Message> getOutbox()
+    public LinkedList<Message> getOutbox()
     {
         return outbox;
     }
 
-    public ArrayList<String> getHistory()
+    public LinkedList<String> getHistory()
     {
         return history;
     }
+
+
 
 }

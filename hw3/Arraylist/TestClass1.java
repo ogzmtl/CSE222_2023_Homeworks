@@ -6,6 +6,7 @@ public class TestClass1 {
 
     public static void main(String[] args) {
 
+        int loginAccountId = -1;
         boolean isViewedProfile = false; 
         ArrayList<Account> accounts = new ArrayList<Account>();
         Account gizemsungu = new Account(1, "gizemsungu", "10.06.1999", "istanbul");
@@ -19,11 +20,12 @@ public class TestClass1 {
         accounts.add(gokhankaya);
         accounts.add(oguzmutlu);
 
-        gizemsungu.sharePost(post1);
-        gizemsungu.follow(gokhankaya);
-        gizemsungu.viewPost(gizemsungu, true);
+        loginAccountId = gizemsungu.login(loginAccountId);
+        gizemsungu.sharePost(post1, loginAccountId);
+        gizemsungu.follow(gokhankaya,loginAccountId);
+        gizemsungu.viewPost(gizemsungu, true,loginAccountId);
         // sibelgulmez.sharePost(post1);
-        gizemsungu.follow(sibelgulmez);
+        sibelgulmez.follow(sibelgulmez,loginAccountId);
 
         // for(int i = 0; i < gizemsungu.getHistory().size(); i++)
         // {
