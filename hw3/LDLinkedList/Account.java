@@ -272,7 +272,6 @@ public class Account {
             System.out.println("Unable to view Profile");
             return false; 
         }
-
         System.out.println("Viewing " + account.getUsername() + "'s profile...");
         System.out.println("------------------------");
 
@@ -313,10 +312,17 @@ public class Account {
             System.out.println("Unable to view profile, Different account or no account currently logged in.");
             return; 
         }
+        try{
+            account.getInbox().add(message);
+            this.getOutbox().add(message);
+            history.add(MESSAGE + account.getUsername());
+        }catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
         //check Message includes.
-        account.getInbox().add(message);
-        this.getOutbox().add(message);
-        history.add(MESSAGE + account.getUsername());
+
     }
 
 
@@ -338,15 +344,20 @@ public class Account {
         }
         System.out.println("Viewing inbox ...\n------------------");
 
-        for(int i = 0; i < getInbox().size(); i++)
-        {
-            System.out.println("Message ID: "+ getInbox().get(i).getMessageId());
-            System.out.println("From: "+ accounts.get(getInbox().get(i).getSenderId()-1).getUsername());
-            System.out.println("To: "+ this.getUsername());
-            System.out.println("Message: "+ getInbox().get(i).getContent());
-            System.out.println("---------------------");
+        try{
+            for(int i = 0; i < getInbox().size(); i++)
+            {
+                System.out.println("Message ID: "+ getInbox().get(i).getMessageId());
+                System.out.println("From: "+ accounts.get(getInbox().get(i).getSenderId()-1).getUsername());
+                System.out.println("To: "+ this.getUsername());
+                System.out.println("Message: "+ getInbox().get(i).getContent());
+                System.out.println("---------------------");
+            }
+            history.add(VIEW + "inbox messages");
+        }catch(Exception e){
+            e.printStackTrace();
         }
-        history.add(VIEW + "inbox messages");
+
 
     }
 
@@ -372,6 +383,11 @@ public class Account {
     }
     public boolean isBlocked(Account account)
     {
+        try{
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         for(int i = 0; i < this.getBlocked().size(); i++)
         {
             if(this.getBlocked().get(i).getUsername() == account.getUsername()) return true; 
@@ -390,75 +406,96 @@ public class Account {
         int numComment = 1; 
         System.out.println("Viewing "+ targetAccount.getUsername() + "'s posts' interactions...");
         System.out.println("-----------------------------------------");
+        try{
 
-        for(Post i : targetAccount.getPosts())
-        {
-            System.out.println("(PostID: " + i.getpostId() + "): " +i.getContent());     
-            
-            if(i.getLikes().size() != 0 )
+            for(Post i : targetAccount.getPosts())
             {
-                System.out.print("The post was liked by the following account(s): ");   
-                for(Like j: i.getLikes())
+                System.out.println("(PostID: " + i.getpostId() + "): " +i.getContent());     
+                
+                if(i.getLikes().size() != 0 )
                 {
-                    System.out.print(accounts.get(j.getAccountId()-1).getUsername()+ ", ");
+                    System.out.print("The post was liked by the following account(s): ");   
+                    for(Like j: i.getLikes())
+                    {
+                        System.out.print(accounts.get(j.getAccountId()-1).getUsername()+ ", ");
+                    }
+                    System.out.println();
                 }
-                System.out.println();
-            }
-            else
-            {
-                System.out.println("The post has no likes.");
-            }
-
-            if (i.getComments().size() != 0)
-            {
-                System.out.println("The post has "+ i.getComments().size() +" comment(s)...");   
-                for(Comment j: i.getComments())
+                else
                 {
-                    System.out.print("Comment "+ numComment + ": " );
-                    System.out.println("' " + accounts.get(j.getAccountId()-1).getUsername()+ "' "
-                                     +"said '" + j.getContent() + "'");
-                    numComment++;
+                    System.out.println("The post has no likes.");
                 }
-                numComment=1;
+    
+                if (i.getComments().size() != 0)
+                {
+                    System.out.println("The post has "+ i.getComments().size() +" comment(s)...");   
+                    for(Comment j: i.getComments())
+                    {
+                        System.out.print("Comment "+ numComment + ": " );
+                        System.out.println("' " + accounts.get(j.getAccountId()-1).getUsername()+ "' "
+                                         +"said '" + j.getContent() + "'");
+                        numComment++;
+                    }
+                    numComment=1;
+                }
+                else
+                {
+                    System.out.println("The post has no comments.");
+                }
+                System.out.println("------------------------");
             }
-            else
-            {
-                System.out.println("The post has no comments.");
-            }
-            System.out.println("------------------------");
+            history.add(VIEW + targetAccount.getUsername() + "'s posts.");
+        }catch(Exception e){
+            e.printStackTrace();
         }
-        history.add(VIEW + targetAccount.getUsername() + "'s posts.");
+
     }
     public boolean isBlockedByAccount(Account account)
     {
-        for(int i = 0; i < account.getBlocked().size(); i++)
-        {
-            if(account.getBlocked().get(i).getUsername() == this.username) return true;
+        try{
+            for(int i = 0; i < account.getBlocked().size(); i++)
+            {
+                if(account.getBlocked().get(i).getUsername() == this.username) return true;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
         }
         return false;
+
     }
 
     public void block(Account account, int loginAccountId)
     {
         if(isBlocked(account))
             return;
-
-        if(isInFollowing(account))
+        try
         {
-            unfollow(account, loginAccountId);
-        }
-        if(isInFollowers(account))
-        {
-            account.getFollowing().remove(this);
-            getFollowers().remove(account);
-        }
-        removeLikeInBlocking(account);
-        removeAccountLikeInBlocking(account);
-        removeCommentInBlocking(account);
-        removeAccountCommentInBlocking(account);
+            if(isInFollowing(account))
+            {
+                unfollow(account, loginAccountId);
+            }
+            if(isInFollowers(account))
+            {
+                // try{
+                    account.getFollowing().remove(this);
+                    getFollowers().remove(account);
+                // }catch(Exception e){
+                //     System.out.println("Blocking Object issue " + e.getMessage());
+                // }
 
-        blocked.add(account);       
-        history.add(BLOCK + account.getUsername());
+            }
+
+            removeLikeInBlocking(account);
+            removeAccountLikeInBlocking(account);
+            removeCommentInBlocking(account);
+            removeAccountCommentInBlocking(account);
+
+            blocked.add(account);       
+            history.add(BLOCK + account.getUsername());
+        }catch(Exception e){
+            System.out.println("Blocking Issue");
+            e.printStackTrace();
+        }
  
     }
 
@@ -478,65 +515,84 @@ public class Account {
     }
     private void removeLikeInBlocking(Account account)
     {
-        for(int i = 0; i < account.getPosts().size(); i++)
-        {
-            if(account.getPosts().get(i).getLikes().size() != 0)
+        try{
+            for(int i = 0; i < account.getPosts().size(); i++)
             {
-                for(int j = 0; j < account.getPosts().get(i).getLikes().size(); j++)
+                if(account.getPosts().get(i).getLikes().size() != 0)
                 {
-                    if(account.getPosts().get(i).getLikes().get(j).getAccountId() == getAccountId())
-                        account.unlike(account.getPosts().get(i),
-                                  account.getPosts().get(i).getLikes().get(j));
+                    for(int j = 0; j < account.getPosts().get(i).getLikes().size(); j++)
+                    {
+                        if(account.getPosts().get(i).getLikes().get(j).getAccountId() == getAccountId())
+                            account.unlike(account.getPosts().get(i),
+                                      account.getPosts().get(i).getLikes().get(j));
+                    }
                 }
             }
+        }catch(Exception e)
+        {
+            System.out.println("An error occured" + e.getMessage());
         }
+
     }
     private void removeAccountLikeInBlocking(Account account)
     {
-
-        for(int i = 0; i < this.getPosts().size(); i++)
-        {
-            if(getPosts().get(i).getLikes().size() != 0)
+        try{
+            for(int i = 0; i < this.getPosts().size(); i++)
             {
-                for(int j = 0; j < getPosts().get(i).getLikes().size(); j++ )
+                if(getPosts().get(i).getLikes().size() != 0)
                 {
-                    if(getPosts().get(i).getLikes().get(j).getAccountId() == account.getAccountId())
-                        unlike(getPosts().get(i),getPosts().get(i).getLikes().get(j));
+                    for(int j = 0; j < getPosts().get(i).getLikes().size(); j++ )
+                    {
+                        if(getPosts().get(i).getLikes().get(j).getAccountId() == account.getAccountId())
+                            unlike(getPosts().get(i),getPosts().get(i).getLikes().get(j));
+                    }
                 }
             }
+        }catch(Exception e){
+            System.out.println("An error occured " + e.getMessage());
         }
+
     }
 
     private void removeCommentInBlocking(Account account)
     {
-        for(int i = 0; i < account.getPosts().size(); i++)
-        {
-            if(account.getPosts().get(i).getComments().size() != 0)
+        try{
+            for(int i = 0; i < account.getPosts().size(); i++)
             {
-                for(int j = 0; j < account.getPosts().get(i).getComments().size(); j++)
+                if(account.getPosts().get(i).getComments().size() != 0)
                 {
-                    if(account.getPosts().get(i).getComments().get(j).getAccountId() == getAccountId())
-                        account.uncomment(account.getPosts().get(i),
-                                  account.getPosts().get(i).getComments().get(j));
+                    for(int j = 0; j < account.getPosts().get(i).getComments().size(); j++)
+                    {
+                        if(account.getPosts().get(i).getComments().get(j).getAccountId() == getAccountId())
+                            account.uncomment(account.getPosts().get(i),
+                                      account.getPosts().get(i).getComments().get(j));
+                    }
                 }
             }
+        }catch(Exception e){
+            System.out.println("An error occured " + e.getMessage());
         }
+
     }
 
     private void removeAccountCommentInBlocking(Account account)
     {
-
-        for(int i = 0; i < this.getPosts().size(); i++)
-        {
-            if(getPosts().get(i).getComments().size() != 0)
+        try{
+            for(int i = 0; i < this.getPosts().size(); i++)
             {
-                for(int j = 0; j < getPosts().get(i).getComments().size(); j++ )
+                if(getPosts().get(i).getComments().size() != 0)
                 {
-                    if(getPosts().get(i).getComments().get(j).getAccountId() == account.getAccountId())
-                        uncomment(getPosts().get(i),getPosts().get(i).getComments().get(j));
+                    for(int j = 0; j < getPosts().get(i).getComments().size(); j++ )
+                    {
+                        if(getPosts().get(i).getComments().get(j).getAccountId() == account.getAccountId())
+                            uncomment(getPosts().get(i),getPosts().get(i).getComments().get(j));
+                    }
                 }
             }
+        }catch(Exception e){
+            System.out.println("An error occured " + e.getMessage());
         }
+
     }
 
     public void checkingOutbox(int loginAccountId){
@@ -563,19 +619,29 @@ public class Account {
 
     private boolean isInFollowing(Account account)
     {
-        for(int i = 0; i < following.size(); i++)
-        {
-            if(following.get(i).getUsername() == account.getUsername())return true;
+        try{
+            for(int i = 0; i < following.size(); i++)
+            {
+                if(following.get(i).getUsername() == account.getUsername())return true;
+            }
+        }catch(Exception e){
+            System.out.println("An error occured " + e.getMessage());
         }
+
         return false;
     }
 
     private boolean isInFollowers(Account account)
     {
-        for(int i = 0; i < account.getFollowing().size(); i++)
-        {
-            if(account.getFollowing().get(i).getUsername() == this.getUsername())return true;
+        try{
+            for(int i = 0; i < account.getFollowing().size(); i++)
+            {
+                if(account.getFollowing().get(i).getUsername() == this.getUsername())return true;
+            }
+        }catch(Exception e){
+            System.out.println("An error occured " + e.getMessage());
         }
+
         return false; 
     }
     public Integer getAccountId()

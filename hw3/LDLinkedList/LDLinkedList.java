@@ -7,9 +7,6 @@ import java.util.NoSuchElementException;
 
 public class LDLinkedList<E> extends AbstractList<E> implements List<E>{
 
-    //Ld linkedlist yazilacak
-    //remove yazilacak 
-    //remove fonksiyonlari check edilecek 
     //javadoc yazilacak 
     //rapor yazilacak
 
@@ -118,31 +115,53 @@ public class LDLinkedList<E> extends AbstractList<E> implements List<E>{
                 int temp1 = tmarked; 
                 tmarked = index; 
                 index = temp1;
-                remove(tmarked, index);
             }
-        }
-        else{
-            return null;
-        }
-        
-        E tempData = head.data;
-        if(index == 0)
-        {
-            // iterator.next();
-            head = head.next;
-        }
-        else{
-            for(int i = 0; i < index; i++)
+            remove(tmarked, index);
+            E tempData = head.data;
+            if(index == 0)
             {
-                iteratorNew.next();
+                // iterator.next();
+                head = head.next;
             }
-            
-            tempData = iteratorNew.current.data;
-            iteratorNew.getPrev().next =  iteratorNew.current.next;
-            iteratorNew.current.next = null;
+            // else{
+            //     for(int i = 0; i < index; i++)
+            //     {
+            //         iteratorNew.next();
+            //     }
+                
+            //     tempData = iteratorNew.current.data;
+            //     iteratorNew.getPrev().next =  iteratorNew.current.next;
+            //     iteratorNew.current.next = null;
+            // }
+            // size--;
+            remove(index, tmarked);
+            return tempData;
+                
         }
-        size--;
-        return tempData;
+        return null;
+
+        // else{
+        //     return null;
+        // }
+        
+        // E tempData = head.data;
+        // if(index == 0)
+        // {
+        //     // iterator.next();
+        //     head = head.next;
+        // }
+        // else{
+        //     for(int i = 0; i < index; i++)
+        //     {
+        //         iteratorNew.next();
+        //     }
+            
+        //     tempData = iteratorNew.current.data;
+        //     iteratorNew.getPrev().next =  iteratorNew.current.next;
+        //     iteratorNew.current.next = null;
+        // }
+        // size--;
+        // return tempData;
     }
 
     public E remove(int index, int marked){
@@ -171,10 +190,10 @@ public class LDLinkedList<E> extends AbstractList<E> implements List<E>{
         size--;
         return tempData;
     }
-    public boolean remove(Object obj){
+    public boolean remove(Object obj) { 
         
         LDIterator<E> iteratorNew = iterator();
-        E tempData;
+        // E tempData;
         while (iteratorNew.hasNext()) {
             Node<E> currNode = iteratorNew.current;
             if (obj.equals(currNode)) {
@@ -184,7 +203,7 @@ public class LDLinkedList<E> extends AbstractList<E> implements List<E>{
             }
             iteratorNew.next();
         }
-        return false;
+        throw new NoSuchElementException();
     }
 
 

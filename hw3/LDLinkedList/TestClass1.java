@@ -7,11 +7,11 @@ public class TestClass1 {
         // ll.add("AAA");
         // ll.add("BBB");
         // ll.add("CCC");
-        // ll.add(3,"DDD");
+        // ll.add("DDD");
         // ll.add("FFF");
         // ll.add("GGG");
-        // ll.remove(2);
         // ll.remove(1);
+        // ll.remove(4);
 
         // for(int i = 0; i < ll.size(); i++){
         //     System.out.println(ll.get(i));

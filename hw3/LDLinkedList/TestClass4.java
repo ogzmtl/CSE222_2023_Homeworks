@@ -83,6 +83,11 @@ public class TestClass4 {
         loginAccountid = gokhankaya.logout();
         System.out.println();
         // **************************************************************************************************************
+        // loginAccountid = gizemsungu.login(loginAccountid);
+        // Comment newComment1 = new Comment("Weathersss is cold in here!");
+        // gizemsungu.comment(sibelgulmez, post4,newComment1, loginAccountid);
+        // loginAccountid = gizemsungu.logout();
+        // **************************************************************************************************************
         System.out.print("Step 13... Logging into another account (username: " + sibelgulmez.getUsername() + ")...");
         loginAccountid = sibelgulmez.login(loginAccountid);
         System.out.println();
@@ -119,6 +124,13 @@ public class TestClass4 {
         sibelgulmez.viewInteractions(sibelgulmez, accounts, loginAccountid);
         System.out.println();
         // **************************************************************************************************************
+        // loginAccountid = sibelgulmez.logout();
+
+        // loginAccountid = gizemsungu.login(loginAccountid);
+        // gizemsungu.uncomment(sibelgulmez, post4,newComment1, loginAccountid);
+        // loginAccountid = gizemsungu.logout();
+        // loginAccountid = sibelgulmez.login(loginAccountid);
+        // sibelgulmez.viewInteractions(sibelgulmez, accounts, loginAccountid);
     }
     
     public static boolean createAccount(LDLinkedList<Account> accounts, Account newAccount){
