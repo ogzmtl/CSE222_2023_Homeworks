@@ -169,7 +169,7 @@ public class Account {
         getPosts().get(post.getpostId()-1).getComments().remove(comment);
         
         history.add(UNCOMMENTED + getUsername() + "'s post id:" 
-                    + getPosts().get(comment.getPostId()));
+                    + getPosts().get(comment.getPostId()-1));
     }
 
     public void comment(Account account, Comment comment, int loginAccountId)
@@ -456,7 +456,7 @@ public class Account {
         removeLikeInBlocking(account);
         removeAccountLikeInBlocking(account);
         removeCommentInBlocking(account);
-        // removeAccountCommentInBlocking(account);
+        removeAccountCommentInBlocking(account);
 
         blocked.add(account);       
         history.add(BLOCK + account.getUsername());
@@ -523,6 +523,23 @@ public class Account {
             }
         }
     }
+
+    private void removeAccountCommentInBlocking(Account account)
+    {
+
+        for(int i = 0; i < this.getPosts().size(); i++)
+        {
+            if(getPosts().get(i).getComments().size() != 0)
+            {
+                for(int j = 0; j < getPosts().get(i).getComments().size(); j++ )
+                {
+                    if(getPosts().get(i).getComments().get(j).getAccountId() == account.getAccountId())
+                        uncomment(getPosts().get(i),getPosts().get(i).getComments().get(j));
+                }
+            }
+        }
+    }
+
     public void checkingOutbox(int loginAccountId){
         if(loginAccountId != this.getAccountId()){
             System.out.println("Unable to view outbox, Different account currently logged in.");
