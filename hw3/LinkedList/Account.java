@@ -97,6 +97,7 @@ public class Account {
             return null; 
         }
         Like tempLike = new Like(this.getAccountId(), 0, post.getpostId());
+        System.out.println("Liking " + account.getUsername() + "'s posts...' ");
         account.getPosts().get(post.getpostId()-1).addLike(tempLike);
         history.add(LIKE + account.getUsername() + "'s post id: "+ post.getpostId());
         return tempLike;
@@ -109,6 +110,7 @@ public class Account {
             System.out.println("Unable to view profile, Different account or no account currently logged in.");
             return; 
         }
+        System.out.println("Unliking " + account.getUsername() + "'s posts...' ");
         account.getPosts().get(post.getpostId()-1).getLikes().remove(like);
 
         history.add(UNLIKE + account.getUsername() + "'s post id: "+ post.getpostId());
@@ -132,6 +134,20 @@ public class Account {
 
         history.add(COMMENTED + account.getUsername() + "'s post id:" 
                    + account.getPosts().get(tempComment.getPostId()));
+        return tempComment;
+    }
+    public Comment comment(Account account, Post post, Comment comment, int loginAccountId)
+    {
+        if(loginAccountId != this.getAccountId())
+        {
+            System.out.println("Unable to view profile, Different account or no account currently logged in.");
+            return null; 
+        }
+        Comment tempComment = new Comment(0, accountId, post.getpostId(), comment.getContent());
+        account.getPosts().get(post.getpostId()-1).addComment(tempComment);
+
+        history.add(COMMENTED + account.getUsername() + "'s post id:" 
+                   + account.getPosts().get(tempComment.getPostId()-1));
         return tempComment;
     }
 
@@ -218,6 +234,30 @@ public class Account {
         sendMessage(account, tempMessage, loginAccountId); 
         history.add(MESSAGE + account.getUsername());
 
+    }
+    public void viewPost(Account account, boolean isViewedProfile, int loginAccountId)
+    {
+        if(loginAccountId != this.getAccountId())
+        {
+            System.out.println("Unable to view profile, Different account or no account currently logged in.");
+            return; 
+        }
+
+        if(isBlocked(account) || isBlockedByAccount(account) || !isViewedProfile)
+        {
+            System.out.println("Unable to view Post.");
+            return;
+        }
+
+        System.out.println("Viewing " +account.getUsername()+"'s posts...");
+
+        for(int i = 0; i < account.getPosts().size(); i++)
+        {
+            System.out.print("(Post ID: " +account.getPosts().get(i).getpostId() + ") "+
+                             account.getUsername() +": ");
+            System.out.println(account.getPosts().get(i).getContent());
+        }
+        history.add(VIEW + account.getUsername() + "'s posts");
     }
 
     public boolean viewProfile(Account account, int loginAccountId)
@@ -386,6 +426,7 @@ public class Account {
             {
                 System.out.println("The post has no comments.");
             }
+            System.out.println("------------------------");
         }
         history.add(VIEW + targetAccount.getUsername() + "'s posts.");
     }
@@ -481,16 +522,27 @@ public class Account {
                 }
             }
         }
-        // for(Post i : account.getPosts())
-        // {
-        //     if(i.getComments().size() != 0)
-        //     {
-        //         for(Comment j : i.getComments())
-        //         {
-        //             if(j.getAccountId() == this.getAccountId()) uncomment(account, i, j);
-        //         }
-        //     }       
-        // }
+    }
+    public void checkingOutbox(int loginAccountId){
+        if(loginAccountId != this.getAccountId()){
+            System.out.println("Unable to view outbox, Different account currently logged in.");
+            return;
+        }
+        System.out.print("Checking outbox...");
+        System.out.println("\nThere is/are "+ (this.outbox.size()) +" message(s) in the outbox");
+    }
+
+    /**
+     * checks the coming messages
+     * @param loginAccountId login check
+     */
+    public void checkingInbox(int loginAccountId){
+        if(loginAccountId != this.getAccountId()){
+            System.out.println("Unable to view inbox, Different account currently logged in.");
+            return;
+        }
+        System.out.print("Checking inbox...");
+        System.out.println("\nThere is/are "+ (this.inbox.size()) +" message(s) in the inbox");
     }
 
     private boolean isInFollowing(Account account)

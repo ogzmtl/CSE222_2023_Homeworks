@@ -56,6 +56,11 @@ public class LDLinkedList<E> extends AbstractList<E> implements List<E>{
         return new LDIter(index).next();
     }
 
+    // public E remove(int index)
+    // {
+
+    // }
+
     private static class Node<E>
     {
 

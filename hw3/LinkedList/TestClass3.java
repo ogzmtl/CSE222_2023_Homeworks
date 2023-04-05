@@ -1,12 +1,12 @@
-package Arraylist;
-import java.util.ArrayList;
+package LinkedList;
+import java.util.LinkedList;
 
-public class TestClass3{
+public class TestClass3 {
     public static void main(String[] args) throws Exception {
 
         int loginAccountid = -1;
         boolean isViewedProfile = false; 
-        ArrayList<Account> accounts = new ArrayList<Account>();
+        LinkedList<Account> accounts = new LinkedList<Account>();
         Account gizemsungu = new Account(1, "gizemsungu", "10.06.1999", "istanbul");
         Account sibelgulmez = new Account(2, "sibelgulmez", "10.06.1999", "istanbul");
         Account gokhankaya = new Account(3, "gokhankaya", "10.06.1999", "istanbul");
@@ -143,4 +143,5 @@ public class TestClass3{
     
 
 
-}}
+}
+}

@@ -1,12 +1,12 @@
-package Arraylist;
-import java.util.ArrayList;
+package LinkedList;
+import java.util.LinkedList;
 
-public class TestClass3{
+public class TestClass2 {
     public static void main(String[] args) throws Exception {
 
         int loginAccountid = -1;
         boolean isViewedProfile = false; 
-        ArrayList<Account> accounts = new ArrayList<Account>();
+        LinkedList<Account> accounts = new LinkedList<Account>();
         Account gizemsungu = new Account(1, "gizemsungu", "10.06.1999", "istanbul");
         Account sibelgulmez = new Account(2, "sibelgulmez", "10.06.1999", "istanbul");
         Account gokhankaya = new Account(3, "gokhankaya", "10.06.1999", "istanbul");
@@ -112,35 +112,83 @@ public class TestClass3{
         // *************************************************************************************************************     
         loginAccountid= gizemsungu.logout();
         System.out.println();
-        // ********************************************************************************************************   
-    //3
-    System.out.print("Logging into account (username: " + gizemsungu.getUsername() + ")...");
-    loginAccountid = gizemsungu.login(loginAccountid);
-    System.out.println();
-    // *************************************************************************************************************
+        // *************************************************************************************************************   
+        
+        //Scenario 2 
+        System.out.println();
+        System.out.println("SCENEARIO 2");
+        System.out.println("------------------\n");
 
-    gizemsungu.block(sibelgulmez, loginAccountid); 
-    System.out.println();
+        // *************************************************************************************************************
+        //1.a
+            System.out.print("Logging into account (username: " + gizemsungu.getUsername() + ")...");
+            loginAccountid = gizemsungu.login(loginAccountid);
+            System.out.println();
+        // *************************************************************************************************************
+        //1.b
+            System.out.println("Sharing two posts. ");
+            Post post1 = new Post(1,gizemsungu.getAccountId(), "Sharing first post");
+            Post post2 = new Post(2,gizemsungu.getAccountId(), "Sharing second post");
+            gizemsungu.sharePost(post1,loginAccountid);
+            gizemsungu.sharePost(post2,loginAccountid);
+        // *************************************************************************************************************
+        //1.c
+            loginAccountid = gizemsungu.logout();
+            System.out.println();
+        // *************************************************************************************************************
+        //2
+            System.out.println("Logging into account (username: " + sibelgulmez.getUsername() + ")...");
+            loginAccountid = sibelgulmez.login(loginAccountid);
+            System.out.println();
 
-    loginAccountid = gizemsungu.logout();
-    System.out.println();
+        // *************************************************************************************************************
+        //2.a
+        isViewedProfile = sibelgulmez.viewProfile(gizemsungu, loginAccountid);
+            System.out.println();
+        // *************************************************************************************************************
+        //2.b
+            sibelgulmez.like(gizemsungu, post1, loginAccountid);
+            System.out.println();
+        // *************************************************************************************************************
+        //2.c 
+            loginAccountid = sibelgulmez.logout();
+            System.out.println();
+        // *************************************************************************************************************
 
-    //**************************************************************************************************************
-    System.out.print("Logging in to account (username: " + sibelgulmez.getUsername() + ")...");
-    loginAccountid = sibelgulmez.login(loginAccountid);
-    System.out.println();
+            System.out.println("Logging into account (username: " + gokhankaya.getUsername() + ")...");
+            loginAccountid = gokhankaya.login(loginAccountid);
+            System.out.println();
 
-    //**************************************************************************************************************
-    sibelgulmez.viewProfile(gizemsungu, loginAccountid);
-    System.out.println();
+        // *************************************************************************************************************
+        //3.a
+            isViewedProfile = gokhankaya.viewProfile(gizemsungu, loginAccountid);
+            System.out.println();
+        // *************************************************************************************************************
+        //3.b
+            isViewedProfile = gokhankaya.viewProfile(gizemsungu, loginAccountid);
+            Comment comment1 = new Comment("Nice!");
+            gokhankaya.comment(gizemsungu, post2, comment1, loginAccountid);
+            System.out.println();
+        // *************************************************************************************************************
+        //3.c 
+            Message message3 = new Message(2, gokhankaya.getAccountId(), gizemsungu.getAccountId(), "Hello!");
+            gokhankaya.sendMessage(gizemsungu, message3, loginAccountid);
+            System.out.println();
+        // *************************************************************************************************************
+        //3.d 
+            loginAccountid = gokhankaya.logout();
+            System.out.println();
+        // *************************************************************************************************************
+        //4
+            System.out.print("Logging into account (username: " + gizemsungu.getUsername() + ")...");
+            loginAccountid = gizemsungu.login(loginAccountid);
+            System.out.println();
+        // *************************************************************************************************************
+            isViewedProfile = gizemsungu.viewProfile(gizemsungu, loginAccountid);
+            System.out.println();
+        // *************************************************************************************************************
+            gizemsungu.viewInbox(accounts, loginAccountid);
+        // *************************************************************************************************************
 
-    //**************************************************************************************************************
-    Message message3 = new Message(2, gokhankaya.getAccountId(), gizemsungu.getAccountId(), "Hello!");
-    sibelgulmez.sendMessage(gizemsungu, message3, loginAccountid);
-    System.out.println();
-
-    //***************************************************************************************************************
-    
-
-
-}}
+    }
+}

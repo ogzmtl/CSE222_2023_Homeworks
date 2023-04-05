@@ -7,11 +7,16 @@ public class Post {
     private Integer postId; 
     private Integer accountId;
     private String content; 
-    private ArrayList<Like> likes = new ArrayList<>(); 
-    private ArrayList<Comment> comments = new ArrayList<>();
+    private ArrayList<Like> likes = new ArrayList<Like>(); 
+    private ArrayList<Comment> comments = new ArrayList<Comment>();
 
     public Post(){
         //intentionally empty
+    }
+
+    public Post(String content)
+    {
+        this.content = content;
     }
 
     public Post(int postId, int accountId, String content)
