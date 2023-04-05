@@ -5,6 +5,8 @@ import java.util.ArrayList;
 public class TestClass2 {
     public static void main(String[] args) throws Exception {
 
+        double startTime = System.currentTimeMillis();
+
         int loginAccountid = -1;
         boolean isViewedProfile = false; 
         ArrayList<Account> accounts = new ArrayList<Account>();
@@ -190,6 +192,8 @@ public class TestClass2 {
         // *************************************************************************************************************
             gizemsungu.viewInbox(accounts, loginAccountid);
         // *************************************************************************************************************
-
+        double stopTime = System.currentTimeMillis();
+        double mapLLPut = (double) (stopTime - startTime);
+        System.out.println(mapLLPut); 
     }
 }

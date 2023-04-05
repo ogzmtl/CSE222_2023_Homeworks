@@ -161,7 +161,7 @@ public class Account {
         account.getPosts().get(post.getpostId()-1).getComments().remove(comment);
         
         history.add(UNCOMMENTED + account.getUsername() + "'s post id:" 
-                   + account.getPosts().get(comment.getPostId()));
+                   + account.getPosts().get(comment.getPostId()-1));
     }
 
     public void uncomment(Post post, Comment comment)
@@ -578,6 +578,17 @@ public class Account {
             if(account.getFollowing().get(i).getUsername() == this.getUsername())return true;
         }
         return false; 
+    }
+    public void showHistory(int loginAccountId)
+    {
+        if(loginAccountId != this.getAccountId()){
+            System.out.println("Unable to view inbox, Different account currently logged in.");
+            return;
+        }
+        for(int i = 0; i < history.size(); i++){
+            System.out.println(history.get(i));
+        }
+        
     }
     public Integer getAccountId()
     {

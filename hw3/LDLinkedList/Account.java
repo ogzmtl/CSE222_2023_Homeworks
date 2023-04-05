@@ -132,7 +132,7 @@ public class Account {
         account.getPosts().get(post.getpostId()-1).addComment(tempComment);
 
         history.add(COMMENTED + account.getUsername() + "'s post id:" 
-                   + account.getPosts().get(tempComment.getPostId()));
+                   + account.getPosts().get(tempComment.getPostId()-1));
         return tempComment;
     }
     public Comment comment(Account account, Post post, Comment comment, int loginAccountId)
@@ -160,7 +160,7 @@ public class Account {
         account.getPosts().get(post.getpostId()-1).getComments().remove(comment);
         
         history.add(UNCOMMENTED + account.getUsername() + "'s post id:" 
-                   + account.getPosts().get(comment.getPostId()));
+                   + account.getPosts().get(comment.getPostId()-1).getpostId());
     }
 
     public void uncomment(Post post, Comment comment)
@@ -168,7 +168,7 @@ public class Account {
         getPosts().get(post.getpostId()-1).getComments().remove(comment);
         
         history.add(UNCOMMENTED + getUsername() + "'s post id:" 
-                    + getPosts().get(comment.getPostId()-1));
+                    + getPosts().get(comment.getPostId()));
     }
 
     public void comment(Account account, Comment comment, int loginAccountId)
@@ -181,7 +181,7 @@ public class Account {
         account.getPosts().get(comment.getPostId()).addComment(comment);
 
         history.add(COMMENTED + account.getUsername() + "'s post id:" 
-                   + account.getPosts().get(comment.getPostId()));
+                   + account.getPosts().get(comment.getPostId()-1));
     }
 
     public void follow(Account account, int loginAccountId)
@@ -288,6 +288,7 @@ public class Account {
         for(int i = 0; i < account.getFollowing().size(); i++)
         {
             System.out.print(account.getFollowing().get(i).getUsername() +", ");
+            System.out.print(account.getFollowing().size() +", ");
         }
         System.out.println();
         System.out.print(account.getUsername() + "'s' follower(s): ");
@@ -643,6 +644,17 @@ public class Account {
         }
 
         return false; 
+    }
+    public void showHistory(int loginAccountId)
+    {
+        if(loginAccountId != this.getAccountId()){
+            System.out.println("Unable to view inbox, Different account currently logged in.");
+            return;
+        }
+        for(int i = 0; i < history.size(); i++){
+            System.out.println(history.get(i));
+        }
+        
     }
     public Integer getAccountId()
     {

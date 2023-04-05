@@ -40,6 +40,15 @@ public class Account{
         this.location = location; 
     }
 
+        /**
+     * checks the account is logged in or not
+     * if loginaccount of test class is -1 then no account logged in currently 
+     * if loginaccountid which sent from test class is equal to the this.accoutid then current account logged in 
+     * else of these conditions another account tries to reach logging in
+     * this function keeps this information and process it  
+     * @param loginAccountId gets from testclass which keeps current logged in account id if -1 then no logged in account
+     * @return  current loginAccountid
+     */
     public int login(int loginAccountId)
     {
         // System.out.println("Logging into an account (username: "+ this.getUsername() + ")...");
@@ -55,6 +64,11 @@ public class Account{
         }
     }
 
+    /**
+     * if some account logged out then in testclass loginaccountid have to be -1 
+     * confirm that any account logged in 
+     * @return -1 constant all accounts logged out.
+     */
     public int logout()
     {
         System.out.println("Logging out from account (username: "+ this.getUsername() + ")...");
@@ -112,7 +126,13 @@ public class Account{
         }
         history.add(VIEW + account.getUsername() + "'s posts");
     }
-
+    /**
+     * overriding of like method buy only take which accounts which post liking information
+     * check logged in 
+     * @param account targetaccount for liking a post
+     * @param post post of target account
+     * @param loginAccountId login check 
+     */
     public Like like(Account account, Post post, int loginAccountId)
     {
         
@@ -130,7 +150,13 @@ public class Account{
         history.add(LIKE + account.getUsername() + "'s post id: "+ post.getpostId());
         return tempLike;
     }
-
+    /**
+     * removes the like from post given post id.
+     * @param account post objects publisher
+     * @param post post object 
+     * @param like like object 
+     * @param loginAccountId check the loginned account
+     */
     public void unlike(Account account, Post post, Like like, int loginAccountId)
     {
         if(loginAccountId != this.getAccountId())
@@ -143,7 +169,12 @@ public class Account{
 
         history.add(UNLIKE + account.getUsername() + "'s post id: "+ post.getpostId());
     }
-
+    /**
+     * overriding of unlike method only take which accounts which post unliking information
+     * check logged in 
+     * @param post post of target account
+     * @param like login check 
+     */
     private void unlike(Post post, Like like)
     {
         getPosts().get(post.getpostId()-1).getLikes().remove(like);
@@ -171,6 +202,7 @@ public class Account{
             System.out.println("Unable to view profile, Different account or no account currently logged in.");
             return null; 
         }
+        System.out.println("Adding a comment on a post of " + account.getUsername());
         Comment tempComment = new Comment(0, accountId, post.getpostId(), comment.getContent());
         account.getPosts().get(post.getpostId()-1).addComment(tempComment);
 
@@ -179,7 +211,13 @@ public class Account{
         return tempComment;
     }
 
-
+    /**
+     * removes the given comment from comments 
+     * @param account target account 
+     * @param post target accounts post
+     * @param comment given comment 
+     * @param loginAccountId login check
+     */
     public void uncomment(Account account, Post post, Comment comment, int loginAccountId)
     {
         if(loginAccountId != this.getAccountId())
@@ -190,7 +228,7 @@ public class Account{
         account.getPosts().get(post.getpostId()-1).getComments().remove(comment);
         
         history.add(UNCOMMENTED + account.getUsername() + "'s post id:" 
-                   + account.getPosts().get(comment.getPostId()));
+                   + account.getPosts().get(comment.getPostId()-1));
     }
 
     public void uncomment(Post post, Comment comment)
@@ -198,9 +236,14 @@ public class Account{
         getPosts().get(post.getpostId()-1).getComments().remove(comment);
         
         history.add(UNCOMMENTED + getUsername() + "'s post id:" 
-                    + getPosts().get(comment.getPostId()));
+                    + getPosts().get(comment.getPostId()-1));
     }
-
+    /**
+     * publish a new comment 
+     * @param account target account
+     * @param comment published comment 
+     * @param loginAccountId login check 
+     */
     public void comment(Account account, Comment comment, int loginAccountId)
     {
         if(loginAccountId != this.getAccountId())
@@ -213,7 +256,13 @@ public class Account{
         history.add(COMMENTED + account.getUsername() + "'s post id:" 
                    + account.getPosts().get(comment.getPostId()));
     }
-
+    /**
+     * following the account, add following to the current account and add follower to followed account
+     * checks logged in 
+     * checks blocked or not 
+     * @param account account which want to follow
+     * @param loginAccountid login check
+     */
     public void follow(Account account, int loginAccountId)
     {
         if(loginAccountId != this.getAccountId())
@@ -231,6 +280,11 @@ public class Account{
         history.add(FOLLOWED + account.getUsername());
     }
 
+    /**
+     * unfollow the account, remove from following to the current account and remove from follower to unfollowed account
+     * @param account
+     * @param loginAccountId
+     */
     public void unfollow(Account account, int loginAccountId)
     {
         if(loginAccountId != this.getAccountId())
@@ -266,6 +320,15 @@ public class Account{
 
     }
 
+    /**
+     * views the profile.
+     * checks login account 
+     * checks blocked by or blocking accounts
+     * Then view user information and profile information
+     * @param account account which viewing the profile 
+     * @param loginAccountid login account check 
+     * @return if viewing is successful then returns true otherwise false
+     */
     public boolean viewProfile(Account account, int loginAccountId)
     {
         if(loginAccountId != this.getAccountId())
@@ -485,7 +548,7 @@ public class Account{
             history.add(UNBLOCK + account.getUsername());
         }
     }
-        /**
+    /**
      * checks the send messages
      * @param loginAccountId login check
      */
@@ -591,6 +654,17 @@ public class Account{
             if(account.getFollowing().get(i).getUsername() == this.getUsername())return true;
         }
         return false; 
+    }
+    public void showHistory(int loginAccountId)
+    {
+        if(loginAccountId != this.getAccountId()){
+            System.out.println("Unable to view inbox, Different account currently logged in.");
+            return;
+        }
+        for(int i = 0; i < history.size(); i++){
+            System.out.println(history.get(i));
+        }
+        
     }
 
     public Integer getAccountId()

@@ -3,6 +3,7 @@ package LDLinkedList;
 public class TestClass1 {
     public static void main(String[] args) {
         // LDLinkedList<String> ll = new LDLinkedList<String>();
+        double startTime = System.currentTimeMillis();
 
         // ll.add("AAA");
         // ll.add("BBB");
@@ -10,7 +11,7 @@ public class TestClass1 {
         // ll.add("DDD");
         // ll.add("FFF");
         // ll.add("GGG");
-        // ll.remove(1);
+        // ll.remove(4);
         // ll.remove(4);
 
         // for(int i = 0; i < ll.size(); i++){
@@ -89,7 +90,6 @@ public class TestClass1 {
         loginAccountid = gizemsungu.login(loginAccountid);
         System.out.println();
         // *************************************************************************************************************
-
         System.out.print("Step 15... ");
         gizemsungu.checkingOutbox(loginAccountid);
         System.out.println();
@@ -126,5 +126,9 @@ public class TestClass1 {
         loginAccountid = gizemsungu.logout();
         System.out.println();
         // *******************************************************************************************
+        double stopTime = System.currentTimeMillis();
+        double mapLLPut = (double) (stopTime - startTime);
+
+        System.out.println(mapLLPut);
     }
 }

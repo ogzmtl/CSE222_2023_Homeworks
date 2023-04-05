@@ -14,25 +14,38 @@ public class LDLinkedList<E> extends AbstractList<E> implements List<E>{
     private Node<E> tail = null; 
     LDIterator<E> iterator = iterator();
     private int size = 0; 
-
+/**
+ * setting the constructor tail and head to the null
+ */
     public LDLinkedList(){
         head = null;
         tail = null;
         size = 0;
     }
-
+/**
+ * @return size of the linkedlist
+ */
     public int size(){
-        return size; 
+        int i = 0; 
+        LDIterator<E> iteratorNew = iterator();
+        while(iteratorNew.hasNext()){
+            i++;
+            iteratorNew.next();
+        }
+        return i;
     }
-
+/**
+ * takes generic data and add to the end of the linkedlist 
+ * with the help of iterator, global iterator holds en of the list
+ * @param data 
+ * @return if adding successfull returns true 
+ */
     @Override
     public boolean add(E data)
     {
         Node<E> temp = new Node<>(data); 
         // LDIterator<E> iterator = iterator();
-        int i = 0;
         while(iterator.hasNext()){
-            System.out.println(i++);
             iterator.next();
         }
         if(size == 0){
@@ -41,7 +54,7 @@ public class LDLinkedList<E> extends AbstractList<E> implements List<E>{
         }
         else
         {
-        //    tail = temp; 
+            // iterator.current.next = temp;
             tail.next = temp; 
             tail = temp;
             // iterator.next();
@@ -51,7 +64,10 @@ public class LDLinkedList<E> extends AbstractList<E> implements List<E>{
         // head = new Node<>(data, head);
         return true;
     }
-
+/**
+ * add method with index 
+ * Iterator class used
+ */
     @Override
     public void add(int index, E data)
     {
@@ -86,23 +102,34 @@ public class LDLinkedList<E> extends AbstractList<E> implements List<E>{
         size++;
     }
 
-
+/**
+ * @return gets the given index otherwise returns null
+ */
     @Override
     public E get(int index) {
-
         if(index < 0 || index > size){
             throw new IndexOutOfBoundsException();
         }
 
         LDIterator<E> iteratorNew = iterator();
+        // while(iteratorNew.hasNext()){
+        //     System.out.println("AAAAAAA:");
+        //     iteratorNew.next();
+        // }
+        // iteratorNew = iterator();
         for(int i = 0; i < index; i++)
-        {
+        {   
             iteratorNew.next();
         }
         
-        return iteratorNew.next();
+        return iteratorNew.current.data;
     }
-
+/**
+ * First check marked nodes if any index be marked 
+ * then takes this marked value and send to the override remove function 
+ * @param index takes the index 
+ * @return removed value
+ */
     @Override
     public E remove(int index){
         if(index < 0 || index > size){
@@ -123,17 +150,6 @@ public class LDLinkedList<E> extends AbstractList<E> implements List<E>{
                 // iterator.next();
                 head = head.next;
             }
-            // else{
-            //     for(int i = 0; i < index; i++)
-            //     {
-            //         iteratorNew.next();
-            //     }
-                
-            //     tempData = iteratorNew.current.data;
-            //     iteratorNew.getPrev().next =  iteratorNew.current.next;
-            //     iteratorNew.current.next = null;
-            // }
-            // size--;
             remove(index, tmarked);
             return tempData;
                 
@@ -163,7 +179,12 @@ public class LDLinkedList<E> extends AbstractList<E> implements List<E>{
         // size--;
         // return tempData;
     }
-
+/**
+ * takes the both old and new marked indexes and first remove higher index value 
+ * then remove lower index value
+ * @param index takes the index 
+ * @return removed value
+ */
     public E remove(int index, int marked){
 
         if(index < 0 || index > size){
@@ -190,23 +211,45 @@ public class LDLinkedList<E> extends AbstractList<E> implements List<E>{
         size--;
         return tempData;
     }
+/**
+ * removes the object of Account, post or etc
+ */
     public boolean remove(Object obj) { 
         
         LDIterator<E> iteratorNew = iterator();
         // E tempData;
+        if(obj.equals(head.data)){
+            if(head.next != null )
+                head = head.next;
+            else head = null;
+            return true;
+        }
         while (iteratorNew.hasNext()) {
-            Node<E> currNode = iteratorNew.current;
+            E currNode = iteratorNew.current.data;
+            System.out.println(obj);
+            System.out.println(currNode);
             if (obj.equals(currNode)) {
-                iteratorNew.getPrev().next =  iteratorNew.current.next;
-                iteratorNew.current.next = null;
+                if(iteratorNew.getPrev() == null)
+                    System.out.print( iteratorNew.getPrev().data);
+                iteratorNew.getPrev().next =  iteratorNew.current.next;    
+                iteratorNew.current = iteratorNew.getPrev().next;
+                // iteratorNew.getPrev()  = iteratorNew;
+                // iteratorNew.current.next = null;
                 return true;
             }
             iteratorNew.next();
         }
+
+
         throw new NoSuchElementException();
     }
 
-
+/**
+ * Scannes the all nodes of linkedlist 
+ * marked value is not equal to the new index then returns that founded value 
+ * @param index newindex value 
+ * @return if index is not equal oldMarked value returns old marked value otherwise return index
+ */
     public int scanMarked(int index){
         LDIterator<E> iteratorNew = iterator();
         int i = 0;
@@ -283,6 +326,7 @@ public class LDLinkedList<E> extends AbstractList<E> implements List<E>{
         @Override
         public E next() {
 
+            
             if(!hasNext()){
                 throw new NoSuchElementException();
             }

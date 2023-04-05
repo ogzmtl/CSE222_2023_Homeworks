@@ -4,6 +4,8 @@ import java.util.LinkedList;
 public class TestClass4 {
     public static void main(String[] args) throws Exception 
     {
+        double startTime = System.currentTimeMillis();
+
         int loginAccountid = -1;
         boolean isViewedProfile = false; 
         LinkedList<Account> accounts = new LinkedList<Account>();
@@ -120,6 +122,10 @@ public class TestClass4 {
         sibelgulmez.viewInteractions(sibelgulmez, accounts, loginAccountid);
         System.out.println();
         // **************************************************************************************************************
+        sibelgulmez.showHistory(loginAccountid);
+        double stopTime = System.currentTimeMillis();
+        double mapLLPut = (double) (stopTime - startTime);
+        System.out.println(mapLLPut); 
     }
     
     public static boolean createAccount(LinkedList<Account> accounts, Account newAccount){

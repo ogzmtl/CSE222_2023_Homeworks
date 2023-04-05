@@ -120,7 +120,7 @@ public class TestClass3 {
 
     gizemsungu.block(sibelgulmez, loginAccountid); 
     System.out.println();
-
+    //**************************************************************************************************************
     loginAccountid = gizemsungu.logout();
     System.out.println();
 

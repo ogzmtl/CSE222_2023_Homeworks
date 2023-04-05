@@ -124,6 +124,7 @@ public class TestClass4 {
         sibelgulmez.viewInteractions(sibelgulmez, accounts, loginAccountid);
         System.out.println();
         // **************************************************************************************************************
+        sibelgulmez.showHistory(loginAccountid);
         // loginAccountid = sibelgulmez.logout();
 
         // loginAccountid = gizemsungu.login(loginAccountid);

@@ -5,6 +5,8 @@ import java.util.LinkedList;
 public class TestClass1 {
 
     public static void main(String[] args) {
+        
+        double startTime = System.currentTimeMillis();
 
         int loginAccountid = -1;
         boolean isViewedProfile = false; 
@@ -116,6 +118,11 @@ public class TestClass1 {
         loginAccountid = gizemsungu.logout();
         System.out.println();
         // *************************************************************************************************************   
+        
+        double stopTime = System.currentTimeMillis();
+        double mapLLPut = (double) (stopTime - startTime);
+
+        System.out.println(mapLLPut);
     }
     
 }

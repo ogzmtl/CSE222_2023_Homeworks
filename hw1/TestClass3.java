@@ -1,5 +1,6 @@
 public class TestClass3 {
     public static void main(String[] args) throws Exception {
+        double startTime = System.currentTimeMillis();
 
         int loginAccountid = -1; 
 
@@ -141,7 +142,9 @@ public class TestClass3 {
 
         //***************************************************************************************************************
         
-
+        double stopTime = System.currentTimeMillis();
+        double mapLLPut = (double) (stopTime - startTime);
+        System.out.println(mapLLPut); 
 
     }
 }

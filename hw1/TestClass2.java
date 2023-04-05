@@ -2,6 +2,7 @@ public class TestClass2 {
     
     public static void main(String[] args) throws Exception {
 
+        double startTime = System.currentTimeMillis();
         int loginAccountid = -1; 
 
         Account[] accounts = new Account[4];      
@@ -190,7 +191,9 @@ public class TestClass2 {
         // *************************************************************************************************************
             gizemsungu.viewInbox(accounts, loginAccountid);
         // *************************************************************************************************************
-
+        double stopTime = System.currentTimeMillis();
+        double mapLLPut = (double) (stopTime - startTime);
+        System.out.println(mapLLPut); 
 
     }
 }
