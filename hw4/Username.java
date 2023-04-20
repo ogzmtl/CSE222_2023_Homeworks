@@ -1,4 +1,4 @@
-
+import java.util.NoSuchElementException;
 
 public class Username {
 
@@ -20,7 +20,12 @@ public class Username {
             return false;
     }
 
-    public boolean checkIfValidUsername(String username){
+    public boolean checkIfValidUsername(String username) throws NoSuchElementException{
+
+        if(username.length() == 0){
+            System.out.println("The username is invalid due to an empty username. Try again.");
+            throw new NoSuchElementException();
+        }
 
         if(username.length() == 1 && Character.isLetter(username.charAt(0))){
             return true; 
@@ -29,7 +34,14 @@ public class Username {
         if(Character.isLetter(username.charAt(0))){
             return checkIfValidUsername(username.substring(1));
         }
-        else 
+        else {
+            System.out.println("The username is invalid due to an digit or not character included. Try again.");
             return false;
+        }
+            
     }
+    public String getUsername() {
+        return username;
+    }
+
 }
