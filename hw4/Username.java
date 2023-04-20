@@ -20,6 +20,14 @@ public class Username {
             return false;
     }
 
+/**
+ * check if username is valid include character or not 
+ * This function check username if username current character is valid 
+ * send substring of username (1 to end of username)
+ * @param username given username 
+ * @return true if username is valid 
+ * @throws NoSuchElementException
+ */
     public boolean checkIfValidUsername(String username) throws NoSuchElementException{
 
         if(username.length() == 0){
