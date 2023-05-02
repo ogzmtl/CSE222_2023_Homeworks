@@ -8,5 +8,6 @@ public class testMain {
 
 
         first.readFromTxt(filename);
+        first.tree();
     }
 }
