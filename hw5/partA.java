@@ -3,6 +3,8 @@ import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
+import java.util.Stack;
+
 import javax.swing.*;  
 import javax.swing.tree.DefaultMutableTreeNode;  
 
@@ -179,14 +181,47 @@ public class partA{
         return false;
     }
 
-    public void DFS(String userInput)
+    public void DFSRecursion(String userInput)
     {
-        if(!helperDFS(userInput, tree)){
+        if(!helperDFSRecursion(userInput, tree)){
             System.out.println("Not found.");
         }
     }
+
+    public boolean DFSStack(String userInput)
+    {
+        Stack<DefaultMutableTreeNode> stackNode = new Stack<DefaultMutableTreeNode>();
+        DefaultMutableTreeNode temp = tree; 
+
+        int counter =0; 
+        stackNode.push(temp);
+
+        while(!stackNode.isEmpty())
+        {
+            counter++;
+            DefaultMutableTreeNode node = stackNode.pop();
+            
+            if(node.getUserObject().equals(userInput))
+            {
+                System.out.println("Step " + counter +" -> " + node.getUserObject() + "(Found!)");
+                return true;
+            }
+            else {
+                System.out.println("Step " + counter +" -> " + node.getUserObject());
+            }
+
+            int childCount = node.getChildCount();
+
+            for(int i = 0; i < childCount; i++) {
+                stackNode.push((DefaultMutableTreeNode)node.getChildAt(i));
+            }
+        }
+        System.out.println("Not found.");
+        return false;
+    }
+
     
-    private boolean helperDFS(String userInput, DefaultMutableTreeNode node)
+    private boolean helperDFSRecursion(String userInput, DefaultMutableTreeNode node)
     {
         stepCounterDFS++;
         if(node == null){
@@ -205,7 +240,7 @@ public class partA{
         if(childCount != 0){   
             for(int i = childCount-1; i >= 0; i--){
                 DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) node.getChildAt(i);
-                if(helperDFS(userInput, childNode)){
+                if(helperDFSRecursion(userInput, childNode)){
                     return true;
                 }
             }
@@ -213,6 +248,7 @@ public class partA{
         return false;
     }
 
+    
     
 
 }
