@@ -9,5 +9,7 @@ public class testMain {
 
         first.readFromTxt(filename);
         first.tree();
+        first.BFS("CSE2332");
+        first.DFS("CSE232");
     }
 }

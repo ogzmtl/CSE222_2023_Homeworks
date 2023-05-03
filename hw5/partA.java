@@ -1,5 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 import javax.swing.*;  
 import javax.swing.tree.DefaultMutableTreeNode;  
@@ -9,6 +11,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 public class partA{
     
     private String[][] txtToArray = new String[1][];
+    private DefaultMutableTreeNode tree = new DefaultMutableTreeNode("Root");
+    private int stepCounterDFS = 0;
 
     public void readFromTxt(String filename) throws FileNotFoundException{
         File file = new File(filename);
@@ -62,25 +66,17 @@ public class partA{
     }
 
     public void tree(){
-        DefaultMutableTreeNode tree = new DefaultMutableTreeNode("root");
         DefaultMutableTreeNode temp = tree;
 
         JFrame fa;  
 
         fa = new JFrame();
         for(int i = 0; i < txtToArray.length; i++){
-            // DefaultMutableTreeNode year = new DefaultMutableTreeNode(txtToArray[i][0]);
-            // tree.add(year);
-            // temp = traverseAllTree(tree);
-            // System.out.println(tree.getUserObject());
-            // insertToTree(tree, year);
+
             temp = tree;
             for(int j = 0; j < txtToArray[i].length; j++){
 
                 DefaultMutableTreeNode lecture = new DefaultMutableTreeNode(txtToArray[i][j]);
-                // System.out.println(year.getUserObject());
-                // System.out.println(lecture.getUserObject());
-                // insertToTree(year, lecture);
 
                 if(insertToTree(temp, lecture)){
                     temp.add(lecture);
@@ -148,5 +144,76 @@ public class partA{
         }
         return null;
     }
+
+    public boolean BFS(String userInput){
+        
+        DefaultMutableTreeNode temp =(DefaultMutableTreeNode) tree.getRoot();
+        Queue<DefaultMutableTreeNode>queueNode = new LinkedList<DefaultMutableTreeNode>();
+        System.out.println("Using BFS to find "+ userInput + " in the tree...");
+
+        queueNode.add((DefaultMutableTreeNode)temp.getRoot());
+        int counter = 1; 
+        while(!queueNode.isEmpty())
+        {
+            DefaultMutableTreeNode printedNode = (DefaultMutableTreeNode) queueNode.poll();
+            
+            if(printedNode.getUserObject().equals(userInput))
+            {
+                System.out.println("Step "+ (counter++) +" -> " +printedNode + "(Found!)");
+                return true;
+            }
+            else{
+                System.out.println("Step "+ (counter++) +" -> " +printedNode);
+            }
+            int childCount = printedNode.getChildCount();
+            if(childCount != 0)
+            {
+                for(int i = 0; i < childCount; i++)
+                {
+                    DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) printedNode.getChildAt(i);
+                    queueNode.add(childNode);
+                }
+            }
+        }
+        System.out.println("Not found.");
+        return false;
+    }
+
+    public void DFS(String userInput)
+    {
+        if(!helperDFS(userInput, tree)){
+            System.out.println("Not found.");
+        }
+    }
+    
+    private boolean helperDFS(String userInput, DefaultMutableTreeNode node)
+    {
+        stepCounterDFS++;
+        if(node == null){
+            return false;
+        } 
+        
+        if(node.getUserObject().equals(userInput)){
+            System.out.println("Step "+ (stepCounterDFS) +" -> " +node + "(Found!)");
+            return true;
+        }
+        else{
+            System.out.println("Step "+ (stepCounterDFS) +" -> " +node);
+        }
+            
+        int childCount = node.getChildCount(); 
+        if(childCount != 0){   
+            for(int i = childCount-1; i >= 0; i--){
+                DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) node.getChildAt(i);
+                if(helperDFS(userInput, childNode)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    
+
 }
 
