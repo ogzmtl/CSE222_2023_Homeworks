@@ -11,6 +11,7 @@ public class testMain {
         first.tree();
         // first.BFS("CSE2332");
         // first.DFSRecursion("CSE232");
-        first.DFSStack("CSE2332");
+        // first.DFSStack("CSE232");
+        first.PostOrderTraversal("CSE2332");
     }
 }

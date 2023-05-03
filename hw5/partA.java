@@ -14,7 +14,7 @@ public class partA{
     
     private String[][] txtToArray = new String[1][];
     private DefaultMutableTreeNode tree = new DefaultMutableTreeNode("Root");
-    private int stepCounterDFS = 0;
+    private int stepCounter = 0;
 
     public void readFromTxt(String filename) throws FileNotFoundException{
         File file = new File(filename);
@@ -188,7 +188,7 @@ public class partA{
         }
     }
 
-    public boolean DFSStack(String userInput)
+    public boolean DFSStack(String userInput)   
     {
         Stack<DefaultMutableTreeNode> stackNode = new Stack<DefaultMutableTreeNode>();
         DefaultMutableTreeNode temp = tree; 
@@ -219,21 +219,20 @@ public class partA{
         System.out.println("Not found.");
         return false;
     }
-
     
     private boolean helperDFSRecursion(String userInput, DefaultMutableTreeNode node)
     {
-        stepCounterDFS++;
+        stepCounter++;
         if(node == null){
             return false;
         } 
         
         if(node.getUserObject().equals(userInput)){
-            System.out.println("Step "+ (stepCounterDFS) +" -> " +node + "(Found!)");
+            System.out.println("Step "+ (stepCounter) +" -> " +node + "(Found!)");
             return true;
         }
         else{
-            System.out.println("Step "+ (stepCounterDFS) +" -> " +node);
+            System.out.println("Step "+ (stepCounter) +" -> " +node);
         }
             
         int childCount = node.getChildCount(); 
@@ -248,8 +247,38 @@ public class partA{
         return false;
     }
 
-    
-    
+    public void PostOrderTraversal(String userInput){
+        stepCounter = 0;
+        if(!helperPostOrderTraversal(userInput, tree)){
+            System.out.println("Not found.");
+        }
+
+    }
+
+    private boolean helperPostOrderTraversal(String userInput, DefaultMutableTreeNode node ){
+        
+        int childCount = node.getChildCount();
+        if(childCount != 0 ){
+            for(int i = 0; i < childCount; i++)
+            {
+                if(helperPostOrderTraversal(userInput, (DefaultMutableTreeNode)node.getChildAt(i)))
+                {
+                    return true;
+                }
+            }
+            // stepCounter++;
+        }
+        stepCounter++;
+        if(node.getUserObject().equals(userInput)){
+            System.out.println("Step "+ (stepCounter) +" -> " +node + "(Found!)");
+            return true;
+        }
+        else{
+            System.out.println("Step "+ (stepCounter) +" -> " +node);
+            return false;
+        }       
+        
+    }
 
 }
 
