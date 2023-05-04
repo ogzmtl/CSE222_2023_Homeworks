@@ -55,7 +55,7 @@ public class testMain {
                         break;
                     
                     case 4:
-                        System.out.println("Enter an input to search with BFS.");
+                        System.out.println("Enter an input to search with Post Order Traversal.");
                         newUserInput = bfsScanner.nextLine();
                         first.PostOrderTraversal(newUserInput);
                         break;
