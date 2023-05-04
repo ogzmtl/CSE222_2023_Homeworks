@@ -15,6 +15,10 @@ public class partA{
     private String[][] txtToArray = new String[1][];
     private DefaultMutableTreeNode tree = new DefaultMutableTreeNode("Root");
     private int stepCounter = 0;
+    private Stack<DefaultMutableTreeNode> newNodeStackRemove = new Stack<DefaultMutableTreeNode>(); 
+    private Stack<DefaultMutableTreeNode> newNodeStackAdd = new Stack<DefaultMutableTreeNode>();
+    private Queue<DefaultMutableTreeNode> newNodeQueueRemove = new LinkedList<DefaultMutableTreeNode>(); 
+    private DefaultMutableTreeNode nn;
 
     public void readFromTxt(String filename) throws FileNotFoundException{
         File file = new File(filename);
@@ -88,7 +92,7 @@ public class partA{
                     temp = moveTreeObject(temp, lecture);
                 }   
             }
-            System.out.println("------------");
+            // System.out.println("------------");
         }
         // insertToTree(tree, null);
         JTree jt=new JTree(tree);  
@@ -99,17 +103,17 @@ public class partA{
 
     public boolean insertToTree(DefaultMutableTreeNode tree,DefaultMutableTreeNode node){
         if(tree.isLeaf()){
-        System.out.println("LeafinsertToTree " + tree.getUserObject() + " node: " + node.getUserObject()); 
+        // System.out.println("LeafinsertToTree " + tree.getUserObject() + " node: " + node.getUserObject()); 
             return true;
         }
         else{
             if(!isInclude(tree, node)){
-                System.out.println("insertToTree " + tree.getUserObject() + " node: " + node.getUserObject()); 
+                // System.out.println("insertToTree " + tree.getUserObject() + " node: " + node.getUserObject()); 
                 return true;
             }
 
         }
-        System.out.println("false");
+        // System.out.println("false");
         return false;
     }
     
@@ -118,7 +122,7 @@ public class partA{
             return false;
         }   
         int childCount = tree.getChildCount();
-        System.out.println("tree : " + tree.getUserObject() +" "+childCount);
+        // System.out.println("tree : " + tree.getUserObject() +" "+childCount);
         for(int i=0;i<childCount;i++){
      
             DefaultMutableTreeNode child = (DefaultMutableTreeNode) tree.getChildAt(i);
@@ -135,7 +139,7 @@ public class partA{
     private DefaultMutableTreeNode moveTreeObject(DefaultMutableTreeNode tree,DefaultMutableTreeNode node){
 
         int childCount = tree.getChildCount();
-        System.out.println("tree : " + tree.getUserObject() +" "+childCount);
+        // System.out.println("tree : " + tree.getUserObject() +" "+childCount);
         for(int i=0;i<childCount;i++){
      
             DefaultMutableTreeNode child = (DefaultMutableTreeNode) tree.getChildAt(i);
@@ -266,7 +270,6 @@ public class partA{
                     return true;
                 }
             }
-            // stepCounter++;
         }
         stepCounter++;
         if(node.getUserObject().equals(userInput)){
@@ -280,5 +283,209 @@ public class partA{
         
     }
 
+    public void move(String source, String destination)
+    {
+        // DefaultMutableTreeNode sourceNode = isExists(source); 
+        // DefaultMutableTreeNode destinationNode = isExists(destination);
+    
+        // System.out.println(sourceNode);
+        createNode(tree, source);
+
+        // System.out.println("aaaa" + nn);
+        // System.out.println("aaaa" + nn.getChildAt(0) + "bbbb" + nn.getChildAt(0));
+        add(nn, destination);
+        // remove(tree);
+        
+        // add(destinationNode)
+
+        // if(addToDest(destination)){
+        //     System.out.println("true");
+        // }
+        //remove new queue;
+    }
+
+    public void add(DefaultMutableTreeNode sourceNode, String dest)
+    {
+        DefaultMutableTreeNode temp = tree;
+        temp = iterateRoot(temp, dest);
+        // System.out.println(sourceNode);
+        // System.out.println(sourceNode.getChildCount());
+        temp.add(sourceNode);
+        // while(!newNodeStackAdd.isEmpty())
+        // {
+        //     DefaultMutableTreeNode createChild = newNodeStackAdd.pop();
+        //     if(insertToTree(temp, sourceNode)){
+                
+        //         if(newNodeStackAdd.isEmpty())
+        //             temp = iterateRoot(temp, dest);
+        //             temp.add(nn);
+        //         // temp = createChild;
+        //         return;
+        //     }
+        //     else{
+        //         temp = moveTreeObject(temp, createChild);
+        //     }  
+        // }
+    }
+
+    private DefaultMutableTreeNode iterateRoot(DefaultMutableTreeNode root, String dest)
+    {
+        String[] splitted = dest.split(",");
+        
+
+        
+        for(int i =0; i < splitted.length; i++) 
+        {
+            int childCount = root.getChildCount();
+
+            for(int j = 0; j < childCount; j++)
+            {
+                if(((DefaultMutableTreeNode)root.getChildAt(i)).getUserObject().equals(splitted[i])){
+                    root = (DefaultMutableTreeNode)root.getChildAt(i);
+                    break;
+                }
+            } 
+        }
+        return root;
+    }
+    private DefaultMutableTreeNode createNode(DefaultMutableTreeNode root, String source)
+    {
+        DefaultMutableTreeNode temp = root;
+        DefaultMutableTreeNode nnTemp = nn;
+        String[] splitted = source.split(",");
+        
+        for(int i =0; i < splitted.length; i++) 
+        {
+            int childCount = temp.getChildCount();
+            for(int j = 0; j < childCount; j++)
+            {
+                DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) temp.getChildAt(j);
+                // System.out.println(splitted[i]);
+                if(childNode.getUserObject().equals(splitted[i]))
+                {
+                    if(i == splitted.length -1)
+                    {
+                        if(nnTemp == null)
+                        {
+                            nnTemp = new DefaultMutableTreeNode(((DefaultMutableTreeNode) temp.getChildAt(j)).getUserObject());
+                        }
+                        else{
+                            nnTemp.add(childNode);
+                        }
+                        
+                    }
+                    else if(i != 0){
+                        if(nnTemp == null)
+                        {
+                            nnTemp = new DefaultMutableTreeNode(((DefaultMutableTreeNode) temp.getChildAt(j)).getUserObject());
+                        }
+                        else
+                        {
+                            DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(((DefaultMutableTreeNode) temp.getChildAt(j)).getUserObject());
+                            nnTemp.add(newNode);
+                        }
+                        // System.out.println("ovvvvv"+ nn);
+                        nnTemp = (DefaultMutableTreeNode)nnTemp.getChildAt(0);
+
+                    }
+                    temp = childNode;
+                    break;
+                }
+            } 
+        }
+        return temp;
+    }
+
+    public void remove(DefaultMutableTreeNode temp)
+    {            
+        DefaultMutableTreeNode node = newNodeStackRemove.pop();
+        // for(int i = 0; i < newNodeStackRemove.size(); i++)
+        // {
+            int childCount = temp.getChildCount();
+            
+            for(int j = 0; j < childCount; j++)
+            {
+                if(((DefaultMutableTreeNode)temp.getChildAt(j)).getUserObject().equals(node))
+                {
+                    remove((DefaultMutableTreeNode)temp.getChildAt(j));
+                    temp.remove(j);
+                    return;
+                }
+            }
+        // }
+
+
+    }
+
+ 
+
+    private DefaultMutableTreeNode isExists(String target)
+    {
+        String[] splitted = target.split(",");
+        DefaultMutableTreeNode newNode = null;
+        DefaultMutableTreeNode temp = (DefaultMutableTreeNode)tree.getRoot();
+        if(1 < splitted.length)
+        {
+            
+            for(int i = splitted.length-1; 0 <= i; i--)
+            {
+                newNode = search(splitted[i], temp);
+                if(newNode == null)
+                {
+                    return null;
+                }
+                else{
+                    // DefaultMutableTreeNode newReferencetoData = new DefaultMutableTreeNode(newNode.getUserObject().toString());
+                    DefaultMutableTreeNode newReferencetoData = newNode;
+                    newNodeStackRemove.add(newReferencetoData);
+                    newNodeStackAdd.add(newReferencetoData);
+                }
+            }
+            return newNode;
+        }
+        else if(splitted.length == 1){
+            newNode = search(splitted[0],temp);
+            if(newNode == null)
+                return null; 
+            else{
+                // DefaultMutableTreeNode newReferencetoData = new DefaultMutableTreeNode(newNode.getUserObject().toString());
+                DefaultMutableTreeNode newReferencetoData = newNode;
+                newNodeStackRemove.add(newReferencetoData);
+                newNodeStackAdd.add(newReferencetoData);
+                return newNode;
+            }
+                
+        }
+        
+        return null;
+    }
+
+    private DefaultMutableTreeNode search(String splitted, DefaultMutableTreeNode node)
+    {
+        if(node == null)
+            return null;
+        
+        if(node.getUserObject().equals(splitted))
+        {
+            return node;
+        }
+        else{
+            int childCount = node.getChildCount();
+
+            for(int i = 0; i < childCount; i++)
+            {
+                DefaultMutableTreeNode childNode =  search(splitted,(DefaultMutableTreeNode) node.getChildAt(i));
+                
+                if(childNode != null){
+                    System.out.println("naber");
+                    return childNode;
+                    // DefaultMutableTreeNode newReference = new DefaultMutableTreeNode(((DefaultMutableTreeNode)node.getChildAt(i)).getUserObject().toString());
+                    // newNodeQueue.add(newReference);
+                    // newNodeStack.add(newReference);
+                }
+            }
+        }
+        return null;
+    }
 }
 

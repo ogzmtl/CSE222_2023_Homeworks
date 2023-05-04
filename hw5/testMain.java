@@ -12,6 +12,7 @@ public class testMain {
         // first.BFS("CSE2332");
         // first.DFSRecursion("CSE232");
         // first.DFSStack("CSE232");
-        first.PostOrderTraversal("CSE2332");
+        // first.PostOrderTraversal("CSE2332");
+        first.move("2023,CSE232", "2021");
     }
 }
