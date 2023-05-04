@@ -5,7 +5,7 @@ import java.util.Queue;
 import java.util.Scanner;
 import java.util.Stack;
 
-import javax.swing.*;  
+// import javax.swing.*;  
 import javax.swing.tree.DefaultMutableTreeNode;  
 
 
@@ -15,9 +15,9 @@ public class partA{
     private String[][] txtToArray = new String[1][];
     private DefaultMutableTreeNode tree = new DefaultMutableTreeNode("Root");
     private int stepCounter = 0;
-    private Stack<DefaultMutableTreeNode> newNodeStackRemove = new Stack<DefaultMutableTreeNode>(); 
-    private Stack<DefaultMutableTreeNode> newNodeStackAdd = new Stack<DefaultMutableTreeNode>();
-    private Queue<DefaultMutableTreeNode> newNodeQueueRemove = new LinkedList<DefaultMutableTreeNode>(); 
+    // private Stack<DefaultMutableTreeNode> newNodeStackRemove = new Stack<DefaultMutableTreeNode>(); 
+    // private Stack<DefaultMutableTreeNode> newNodeStackAdd = new Stack<DefaultMutableTreeNode>();
+    // private Queue<DefaultMutableTreeNode> newNodeQueueRemove = new LinkedList<DefaultMutableTreeNode>(); 
     private DefaultMutableTreeNode nn = new DefaultMutableTreeNode();
 
     public void readFromTxt(String filename) throws FileNotFoundException{
@@ -74,9 +74,6 @@ public class partA{
     public void tree(){
         DefaultMutableTreeNode temp = tree;
 
-        JFrame fa;  
-
-        fa = new JFrame();
         for(int i = 0; i < txtToArray.length; i++){
 
             temp = tree;
@@ -95,10 +92,6 @@ public class partA{
             // System.out.println("------------");
         }
         // insertToTree(tree, null);
-        JTree jt=new JTree(tree);  
-        fa.add(jt);  
-        fa.setSize(200,200);  
-        fa.setVisible(true);  
     }
 
     public boolean insertToTree(DefaultMutableTreeNode tree,DefaultMutableTreeNode node){
@@ -289,11 +282,13 @@ public class partA{
         // DefaultMutableTreeNode destinationNode = isExists(destination);
     
         // System.out.println(sourceNode);
-        createNode(tree, source);
+        if(createNode(tree, source) == null){
+            return;
+        }
 
         // System.out.println("aaaa" + nn);
         // System.out.println("aaaa" + nn.getChildAt(0) + "bbbb" + nn.getChildAt(0));
-        add(nn, destination);
+        add(nn, destination, source);
         // remove(tree);
         
         // add(destinationNode)
@@ -304,34 +299,21 @@ public class partA{
         //remove new queue;
     }
 
-    public void add(DefaultMutableTreeNode sourceNode, String dest)
+    public void add(DefaultMutableTreeNode sourceNode, String dest, String src)
     {
         DefaultMutableTreeNode temp = tree;
         temp = iterateRoot(temp, dest);
         // System.out.println(sourceNode);
         // System.out.println(sourceNode.getChildCount());
         temp.add((DefaultMutableTreeNode)sourceNode.getChildAt(0));
-        // while(!newNodeStackAdd.isEmpty())
-        // {
-        //     DefaultMutableTreeNode createChild = newNodeStackAdd.pop();
-        //     if(insertToTree(temp, sourceNode)){
-                
-        //         if(newNodeStackAdd.isEmpty())
-        //             temp = iterateRoot(temp, dest);
-        //             temp.add(nn);
-        //         // temp = createChild;
-        //         return;
-        //     }
-        //     else{
-        //         temp = moveTreeObject(temp, createChild);
-        //     }  
-        // }
+
     }
 
     private DefaultMutableTreeNode iterateRoot(DefaultMutableTreeNode root, String dest)
     {
         String[] splitted = dest.split(",");
         int counter = 0;
+        System.out.println(splitted.length);
 
         
         for(int i =0; i < splitted.length; i++) 
@@ -346,13 +328,21 @@ public class partA{
                     counter++;
                     break;
                 }
-                else if(i == 0)
-                {
-                    tree.add(new DefaultMutableTreeNode(splitted[i]));
-                }
             } 
+            
+            if(i == 0 && counter != 1)
+            {
+                // System.out.println(splitted[i]);
+                if(insertToTree(tree, new DefaultMutableTreeNode(splitted[i]))){
+                    DefaultMutableTreeNode childNew = new DefaultMutableTreeNode(splitted[i]);
+                    root.add(childNew);
+                    // System.out.println(root.getChildCount());
+                    root = childNew;
+                }
+                break;
+            }
         }
-        if(counter == splitted.length-1){
+        if(counter == splitted.length){
             return root;
         }
         else{
@@ -364,6 +354,7 @@ public class partA{
         DefaultMutableTreeNode temp = root;
         DefaultMutableTreeNode nnTemp = nn;
         String[] splitted = source.split(",");
+        int counter = 0;
         
         for(int i =0; i < splitted.length; i++) 
         {
@@ -371,9 +362,10 @@ public class partA{
             for(int j = 0; j < childCount; j++)
             {
                 DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) temp.getChildAt(j);
-                System.out.println(childNode);
+                // System.out.println(childNode);
                 if(childNode.getUserObject().equals(splitted[i]))
                 {
+                    counter++;
                     if(i == splitted.length -1)
                     {
                         if(nnTemp == null)
@@ -382,8 +374,7 @@ public class partA{
                         }
                         else{
                             nnTemp.add(childNode);
-                        }
-                        
+                        }                        
                     }
                     else if(i != 0){
                         // if(nnTemp == null)
@@ -412,99 +403,26 @@ public class partA{
                 }
             } 
         }
+        if(counter != splitted.length ){
+            System.out.print("Cannot move ");
+            for(int k = 0; k < splitted.length; k++){
+                
+                if(k != splitted.length-1) System.out.print( splitted[k] + " -> ");
+                else 
+                {
+                    System.out.print( splitted[k] + " because it doesn't exist in the tree.\n");
+                    return null;
+                }
+            }
+
+        }
         return temp;
     }
 
-    public void remove(DefaultMutableTreeNode temp)
-    {            
-        DefaultMutableTreeNode node = newNodeStackRemove.pop();
-        // for(int i = 0; i < newNodeStackRemove.size(); i++)
-        // {
-            int childCount = temp.getChildCount();
-            
-            for(int j = 0; j < childCount; j++)
-            {
-                if(((DefaultMutableTreeNode)temp.getChildAt(j)).getUserObject().equals(node))
-                {
-                    remove((DefaultMutableTreeNode)temp.getChildAt(j));
-                    temp.remove(j);
-                    return;
-                }
-            }
-        // }
-
-
-    }
-
- 
-
-    private DefaultMutableTreeNode isExists(String target)
+    public DefaultMutableTreeNode getTree()
     {
-        String[] splitted = target.split(",");
-        DefaultMutableTreeNode newNode = null;
-        DefaultMutableTreeNode temp = (DefaultMutableTreeNode)tree.getRoot();
-        if(1 < splitted.length)
-        {
-            
-            for(int i = splitted.length-1; 0 <= i; i--)
-            {
-                newNode = search(splitted[i], temp);
-                if(newNode == null)
-                {
-                    return null;
-                }
-                else{
-                    // DefaultMutableTreeNode newReferencetoData = new DefaultMutableTreeNode(newNode.getUserObject().toString());
-                    DefaultMutableTreeNode newReferencetoData = newNode;
-                    newNodeStackRemove.add(newReferencetoData);
-                    newNodeStackAdd.add(newReferencetoData);
-                }
-            }
-            return newNode;
-        }
-        else if(splitted.length == 1){
-            newNode = search(splitted[0],temp);
-            if(newNode == null)
-                return null; 
-            else{
-                // DefaultMutableTreeNode newReferencetoData = new DefaultMutableTreeNode(newNode.getUserObject().toString());
-                DefaultMutableTreeNode newReferencetoData = newNode;
-                newNodeStackRemove.add(newReferencetoData);
-                newNodeStackAdd.add(newReferencetoData);
-                return newNode;
-            }
-                
-        }
-        
-        return null;
+        return tree;
     }
 
-    private DefaultMutableTreeNode search(String splitted, DefaultMutableTreeNode node)
-    {
-        if(node == null)
-            return null;
-        
-        if(node.getUserObject().equals(splitted))
-        {
-            return node;
-        }
-        else{
-            int childCount = node.getChildCount();
-
-            for(int i = 0; i < childCount; i++)
-            {
-                DefaultMutableTreeNode childNode =  search(splitted,(DefaultMutableTreeNode) node.getChildAt(i));
-                
-                if(childNode != null){
-                    System.out.println("naber");
-                    return childNode;
-                    // DefaultMutableTreeNode newReference = new DefaultMutableTreeNode(((DefaultMutableTreeNode)node.getChildAt(i)).getUserObject().toString());
-                    // newNodeQueue.add(newReference);
-                    // newNodeStack.add(newReference);
-                }
-            }
-        }
-        return null;
-    }
 }
 
