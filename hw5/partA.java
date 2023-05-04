@@ -376,8 +376,8 @@ public class partA{
             return;
         }
 
-        System.out.println("aaaa" + nn);
-        System.out.println("aaaa" + nn.getChildAt(0) + "bbbb" + nn.getChildAt(0));
+        // System.out.println("aaaa" + nn);
+        // System.out.println("aaaa" + nn.getChildAt(0) + "bbbb" + nn.getChildAt(0));
         add(nn, destination, source);
 
         cleanTree(tree);
@@ -427,10 +427,10 @@ public class partA{
         for(int i = 0; i < sourceNode.getChildCount(); i++)
         {
             int childCount = temp.getChildCount();
-            System.out.println(temp.getChildCount());
+            // System.out.println(temp.getChildCount());
             for(int j = 0; j < childCount; j++)
             {
-                System.out.println(temp);
+                // System.out.println(temp);
                 if(((DefaultMutableTreeNode) temp.getChildAt(j)).getUserObject().equals(((DefaultMutableTreeNode) sourceNode.getChildAt(0)).getUserObject()))
                 {
                     temp = (DefaultMutableTreeNode) temp.getChildAt(j);
@@ -476,7 +476,7 @@ public class partA{
     {
         String[] splitted = dest.split(",");
         int counter = 0;
-        System.out.println(splitted.length);
+        // System.out.println(splitted.length);
 
         
         for(int i =0; i < splitted.length; i++) 
@@ -486,7 +486,7 @@ public class partA{
             for(int j = 0; j < childCount; j++)
             {
                 // System.out.println(dest)
-                System.out.println(splitted[i]);
+                // System.out.println(splitted[i]);
                 if(((DefaultMutableTreeNode)root.getChildAt(j)).getUserObject().equals(compare.getUserObject())){
                     root = (DefaultMutableTreeNode)root.getChildAt(j);
                     counter++;

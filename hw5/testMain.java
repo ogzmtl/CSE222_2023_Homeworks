@@ -5,7 +5,7 @@ import javax.swing.*;
 public class testMain {
     public static void main(String[] args) throws FileNotFoundException {
         
-        String filename = new String("input.txt");
+        String filename = new String("tree.txt");
         partA first = new partA(); 
         int userInput = 0;
 
@@ -24,8 +24,11 @@ public class testMain {
             System.out.println("3.DFS");
             System.out.println("4.PostOrderTraversal");
             System.out.println("5.Move");
+            System.out.println("6.Exit");
                 String newUserInput = new String();
+            try{ 
                 userInput = scanner.nextInt();   
+                       
                 switch(userInput)
                 {
 
@@ -65,27 +68,28 @@ public class testMain {
                         if(isCorrectInput(source, target)){
                             first.move(source, target);
                         }
+                        break;
+                    case 6:
+                        userInput = -1;
+                        System.out.println("BYE");
+                        System.out.println("----------------");
+                        break;
+
+                    default:
+                        System.out.println("Invalid Entry Program Terminates ");
+                        userInput = -1;
                 }
+            }
+            catch(Exception e ){
+                System.out.println("Invalid Entry Program Terminates");
+                userInput = -1;
+            }
         }
         bfsScanner.close();
         scanner.close();
-        // first.readFromTxt(filename);
-        // first.tree();
-        
-        // first.BFS("CSE2332");
-        // first.DFSRecursion("CSE232");
-        // first.DFSStack("CSE232");
-        // first.PostOrderTraversal("CSE2332");
-        // first.move("2023,CSE102", "2022");
-        // DefaultMutableTreeNode temp = first.getTree();
- 
-        // JTree jt=new JTree(temp); 
-        // fa.add(jt);  
-        // fa.setSize(200,200);  
-        // fa.setVisible(true);  
     }
 
-    private static boolean isCorrectInput(String source, String target) {
+    private static boolean isCorrectInput(String source, String target) throws Exception {
         String[] splitted = source.split(",");
 
         if(splitted.length >= 2 )
@@ -97,12 +101,12 @@ public class testMain {
             try{
                 double d = Double.parseDouble(target);
             }catch(Exception e){
-                return false;
+                throw e;
             }
             return true;
         }
         else{
-            return false;
+            throw new Exception();
         }
 
 
