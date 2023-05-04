@@ -13,6 +13,6 @@ public class testMain {
         // first.DFSRecursion("CSE232");
         // first.DFSStack("CSE232");
         // first.PostOrderTraversal("CSE2332");
-        first.move("2023,CSE232", "2021");
+        first.move("2023,CSE232,LECTURE1", "2020");
     }
 }

@@ -18,7 +18,7 @@ public class partA{
     private Stack<DefaultMutableTreeNode> newNodeStackRemove = new Stack<DefaultMutableTreeNode>(); 
     private Stack<DefaultMutableTreeNode> newNodeStackAdd = new Stack<DefaultMutableTreeNode>();
     private Queue<DefaultMutableTreeNode> newNodeQueueRemove = new LinkedList<DefaultMutableTreeNode>(); 
-    private DefaultMutableTreeNode nn;
+    private DefaultMutableTreeNode nn = new DefaultMutableTreeNode();
 
     public void readFromTxt(String filename) throws FileNotFoundException{
         File file = new File(filename);
@@ -310,7 +310,7 @@ public class partA{
         temp = iterateRoot(temp, dest);
         // System.out.println(sourceNode);
         // System.out.println(sourceNode.getChildCount());
-        temp.add(sourceNode);
+        temp.add((DefaultMutableTreeNode)sourceNode.getChildAt(0));
         // while(!newNodeStackAdd.isEmpty())
         // {
         //     DefaultMutableTreeNode createChild = newNodeStackAdd.pop();
@@ -331,7 +331,7 @@ public class partA{
     private DefaultMutableTreeNode iterateRoot(DefaultMutableTreeNode root, String dest)
     {
         String[] splitted = dest.split(",");
-        
+        int counter = 0;
 
         
         for(int i =0; i < splitted.length; i++) 
@@ -340,13 +340,24 @@ public class partA{
 
             for(int j = 0; j < childCount; j++)
             {
+                // System.out.println(dest)
                 if(((DefaultMutableTreeNode)root.getChildAt(i)).getUserObject().equals(splitted[i])){
                     root = (DefaultMutableTreeNode)root.getChildAt(i);
+                    counter++;
                     break;
+                }
+                else if(i == 0)
+                {
+                    tree.add(new DefaultMutableTreeNode(splitted[i]));
                 }
             } 
         }
-        return root;
+        if(counter == splitted.length-1){
+            return root;
+        }
+        else{
+            return null;
+        }
     }
     private DefaultMutableTreeNode createNode(DefaultMutableTreeNode root, String source)
     {
@@ -360,7 +371,7 @@ public class partA{
             for(int j = 0; j < childCount; j++)
             {
                 DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) temp.getChildAt(j);
-                // System.out.println(splitted[i]);
+                System.out.println(childNode);
                 if(childNode.getUserObject().equals(splitted[i]))
                 {
                     if(i == splitted.length -1)
@@ -375,20 +386,28 @@ public class partA{
                         
                     }
                     else if(i != 0){
-                        if(nnTemp == null)
-                        {
-                            nnTemp = new DefaultMutableTreeNode(((DefaultMutableTreeNode) temp.getChildAt(j)).getUserObject());
-                        }
-                        else
-                        {
+                        // if(nnTemp == null)
+                        // {
+                        //     nnTemp = new DefaultMutableTreeNode(((DefaultMutableTreeNode) temp.getChildAt(j)).getUserObject());
+                        // }
+                        // else
+                        // {
                             DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(((DefaultMutableTreeNode) temp.getChildAt(j)).getUserObject());
                             nnTemp.add(newNode);
-                        }
-                        // System.out.println("ovvvvv"+ nn);
-                        nnTemp = (DefaultMutableTreeNode)nnTemp.getChildAt(0);
-
+                            nnTemp = (DefaultMutableTreeNode)nnTemp.getChildAt(0);
+                    //     }
+                    //     // System.out.println("ovvvvv"+ nn);
+                    //     temp = childNode;
+                        temp = childNode;
                     }
-                    temp = childNode;
+                    else if(i == 0)
+                    {
+                        temp = childNode;
+                    }
+                    // else{
+                        
+                    // }
+                    
                     break;
                 }
             } 
