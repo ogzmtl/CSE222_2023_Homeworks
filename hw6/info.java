@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class info {
+public class info implements Cloneable{
     private int count = 0;
     private ArrayList<String> words = new ArrayList<String>();
 
@@ -41,6 +41,12 @@ public class info {
         }
         return str;
 
+    }
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        info copy = (info) super.clone();
+        copy.words = new ArrayList<String>(this.words); // Make a new copy of the ArrayList
+        return copy;
     }
 
 
