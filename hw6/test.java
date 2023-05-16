@@ -3,7 +3,7 @@ public class test {
 
         //'Hush, hush!' whispered the rushing wind.
         //Buzzing bees buzz.
-        String word = "";        
+        String word = "'Hush, hush!' whispered the rushing wind.";        
         try {
             System.out.println("\nOriginal String: "+word);
             word = word.toLowerCase();
@@ -16,6 +16,7 @@ public class test {
             System.out.println("\n");
             mergeSort msort = new mergeSort(lHasMap);
             msort.MergeSort();
+            System.out.println("The sorted map:");
             System.out.println(msort.getSortedMap());
 
         }catch (CloneNotSupportedException e) {

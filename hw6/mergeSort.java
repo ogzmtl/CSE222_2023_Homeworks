@@ -90,10 +90,7 @@ public class mergeSort{
         for(int j = 0; j < sizeOfSubArray2; j++){
             rightList.add(keyList.get(middle+1+j));
         }
-        
-        // System.out.println(leftList.size() + " " + sizeOfSubArray2);
-        // System.out.println(left + " " + middle+ " "+ right);
-        // System.out.println();
+    
         int i = 0;
         int j = 0; 
         int k = left;
