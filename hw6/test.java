@@ -1,13 +1,14 @@
 public class test {
     public static void main(String[] args) {
 
-        String word = "'Hush, hush!' whispered the rushing wind.";
-        System.out.println("\nOriginal String: "+word);
-        word = word.toLowerCase();
-        word = word.replaceAll("[^a-z ]", "");
-        System.out.println("PreProcessed String: "+ word+"\n\n");
-        
+        //'Hush, hush!' whispered the rushing wind.
+        //Buzzing bees buzz.
+        String word = "";        
         try {
+            System.out.println("\nOriginal String: "+word);
+            word = word.toLowerCase();
+            word = word.replaceAll("[^a-z ]", "");
+            System.out.println("PreProcessed String: "+ word+"\n\n");
             myMap lHasMap = new myMap(word);
             lHasMap.createMap();
             System.out.println("The original (unsorted) map:");
@@ -16,15 +17,12 @@ public class test {
             mergeSort msort = new mergeSort(lHasMap);
             msort.MergeSort();
             System.out.println(msort.getSortedMap());
-            System.out.println(msort.getAux());
 
-            for(int i = 0; i < msort.getAux().length; i++) {
-                System.out.println(msort.getAux()[i]);
-            }
-            // System.out.println("\n");
-            // System.out.println(lHasMap);
-
-        } catch (Exception e) {
+        }catch (CloneNotSupportedException e) {
+            System.out.println("CloneNotSupportedException when creating a clone of original map to sorted map");
+            e.printStackTrace();
+        }catch (Exception e) {
+            System.out.println("String is empty or null");
             e.printStackTrace();
         }
 
