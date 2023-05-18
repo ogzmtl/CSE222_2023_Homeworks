@@ -153,6 +153,9 @@ public class mergeSort{
     public myMap getSortedMap(){
         return sortedMap;
     }
+    public myMap getOriginalMap(){
+        return originalMap;
+    }
 
     /**
      * getter for aux map for debugging 

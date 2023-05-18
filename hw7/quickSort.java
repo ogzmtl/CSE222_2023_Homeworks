@@ -29,7 +29,7 @@ public class quickSort extends sort {
     private int partition(int left, int rigth)
     {
 
-        String pivot = aux.get(0);
+        String pivot = aux.get(left);
         int up = left;
         int down = rigth; 
 
