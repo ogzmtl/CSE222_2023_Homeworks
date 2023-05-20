@@ -7,7 +7,15 @@ public class insertionSort extends sort{
     public insertionSort(myMap originalMap){
         super(originalMap);
     }
-
+/**
+    Performs insertion sort on the originalMap based on the count of elements.
+    The sorting is done in ascending order.
+    This method iterates through the elements of originalMap using the auxiliary list 'aux'.
+    For each iteration, it selects an element and compares it with the previous elements.
+    If the count of the selected element is smaller, it shifts the previous elements to make space for the selected element.
+    The resulting sorted elements are stored in the auxiliary list 'aux'.
+    @throws IndexOutOfBoundsException if the index is out of range (i.e., negative or greater than or equal to originalMap size).
+    */
     public void InsertionSort(){
         int first, tempIndex;
         int j = 0;

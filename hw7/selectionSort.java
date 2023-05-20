@@ -16,10 +16,15 @@ public class selectionSort extends sort {
         // this.sortedMap = (myMap)originalMap.clone();
     }
 
-    /**
-     * make a new insertion sort using the original map
-     * 
-     */
+/**
+
+    Performs selection sort on the originalMap based on the count of elements.
+    The sorting is done in ascending order.
+    This method iterates through the elements of originalMap using the auxiliary list 'aux'.
+    For each iteration, it selects the element with the minimum count and swaps it with the current element.
+    The resulting sorted elements are stored in the auxiliary list 'aux'.
+    @throws IndexOutOfBoundsException if the index is out of range (i.e., negative or greater than or equal to originalMap size).
+    */
     public void SelectionSort(){
         int first, second, tempIndex; 
 
