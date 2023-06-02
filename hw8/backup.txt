@@ -1,0 +1,37 @@
+        public CSE222Edge(int dest_x, int dest_y, int source_x, int source_y)
+        {
+            this.dest_x = dest_x;
+            this.dest_y = dest_y;
+            this.source_x = source_x;
+            this.source_y = source_y; 
+            this.weight = 1.0;
+        }
+
+        public CSE222Edge(int dest_x, int dest_y, int source_x, int source_y, double weight)
+        {
+            this.dest_x = dest_x;
+            this.dest_y = dest_y;
+            this.source_x = source_x;
+            this.source_y = source_y; 
+            this.weight = weight;
+        }
+
+        // public boolean equals(Object o)
+        // {
+
+        // }
+    
+        public int getDest_x(){
+            return dest_x;
+        }
+        public int getDest_y(){
+            return dest_y;
+        }
+
+        public int getSource_x(){
+            return source_x;
+        }
+
+        public int getSource_y(){
+            return source_y;
+        }

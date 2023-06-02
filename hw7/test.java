@@ -24,27 +24,54 @@ public class test {
             System.out.println();
             System.out.println("The sorted map:");
             System.out.println(mmm.getSortedMap());
+            myMap reverseSorted = mmm.reverseSorted();
+            myMap normalsorted = mmm.getSortedMap();
 
-            System.out.println("SELECTION SORT");
-            selectionSort sSort = new selectionSort(lHasMap);
-            sSort.SelectionSort();
+            myMap returnedMap;
+
+            System.out.println("\nMERGE SORT");
+            returnedMap = runtimeAnalysisMergeSort(lHasMap);
+            returnedMap = runtimeAnalysisMergeSort(reverseSorted);
+            returnedMap = runtimeAnalysisMergeSort(sorted);
+
+
+            System.out.println("\nSELECTION SORT");
+            returnedMap = runtimeAnalysisSelectionSort(lHasMap);
+            returnedMap = runtimeAnalysisSelectionSort(reverseSorted);
+            returnedMap = runtimeAnalysisSelectionSort(sorted);
+
+            // selectionSort sSort = new selectionSort(lHasMap);
+            // sSort.SelectionSort();
             
-            System.out.println(sSort.getSortedMap());
+            // System.out.println(sSort.getSortedMap());
             
             System.out.println("\nINSERTION SORT");
-            insertionSort iSort = new insertionSort(lHasMap);
-            iSort.InsertionSort();
-            System.out.println(iSort.getSortedMap());
+            
+            // iSort.InsertionSort();
+            // System.out.println(iSort.getSortedMap());
+             
+            returnedMap = runtimeAnalysisInsertionSort(reverseSorted);//insertion sort worst case
+            returnedMap = runtimeAnalysisInsertionSort(lHasMap); //insertion sort average case
+            returnedMap = runtimeAnalysisInsertionSort(normalsorted); //insertion sort best case
 
             System.out.println("\nBUBBLE SORT");
-            bubbleSort bSort = new bubbleSort(lHasMap);
-            bSort.BubbleSort();
-            System.out.println(bSort.getSortedMap());
+            returnedMap = runtimeAnalysisBubbleSort(lHasMap); // average best and worst have to be same
+            returnedMap = runtimeAnalysisBubbleSort(reverseSorted);
+            returnedMap = runtimeAnalysisBubbleSort(normalsorted);
+
+            // bubbleSort bSort = new bubbleSort(lHasMap);
+            // bSort.BubbleSort();
+            // System.out.println(bSort.getSortedMap());
 
             System.out.println("\nQUICK SORT");
-            quickSort qSort = new quickSort(lHasMap);
-            qSort.QuickSort();
-            System.out.println(qSort.getSortedMap());
+            returnedMap = runtimeAnalysisQuickSort(normalsorted);// quick sort worst case
+            returnedMap = runtimeAnalysisQuickSort(lHasMap); // quick sort average case 
+            returnedMap = runtimeAnalysisQuickSort(reverseSorted); //quicksort worst case
+            
+
+            // quickSort qSort = new quickSort(lHasMap);
+            // qSort.QuickSort();
+            // System.out.println(qSort.getSortedMap());
 
         }catch (CloneNotSupportedException e) {
             System.out.println("CloneNotSupportedException when creating a clone of original map to sorted map");
@@ -59,7 +86,7 @@ public class test {
     {
         MergeSort msort = new MergeSort(map);
         double startTime = System.currentTimeMillis();
-        for(int i = 0; i < 1; i++){
+        for(int i = 0; i < 10000; i++){
                 msort = new MergeSort(map);
                 msort.sortt();
             }
@@ -74,7 +101,7 @@ public class test {
         selectionSort ssort = new selectionSort(map);
         // double startTime = System.currentTimeMillis();
         double startTime = System.currentTimeMillis();
-        for(int i = 0; i < 1; i++){
+        for(int i = 0; i < 10000; i++){
             ssort = new selectionSort(map);
             ssort.SelectionSort();
         }
@@ -87,8 +114,9 @@ public class test {
     public static myMap runtimeAnalysisInsertionSort(myMap map) throws CloneNotSupportedException
     {
         insertionSort isort = new insertionSort(map);
+        // System.out.println(map); 
         double startTime = System.currentTimeMillis();
-        for(int i = 0; i < 1; i++){
+        for(int i = 0; i < 10000; i++){
             isort = new insertionSort(map);
             isort.InsertionSort();
         }
@@ -103,7 +131,7 @@ public class test {
         quickSort qsort = new quickSort(map);
         // double startTime = System.currentTimeMillis();
         double startTime = System.currentTimeMillis();
-        for(int i = 0; i < 1; i++){
+        for(int i = 0; i < 10000; i++){
             qsort = new quickSort(map);
             qsort.QuickSort();
         }
@@ -117,7 +145,7 @@ public class test {
     {
         bubbleSort msort = new bubbleSort(map);
         double startTime = System.currentTimeMillis();
-        for(int i = 0; i < 1; i++){
+        for(int i = 0; i < 10000; i++){
             msort = new bubbleSort(map);
             msort.BubbleSort();
         }

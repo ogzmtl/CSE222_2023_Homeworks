@@ -23,6 +23,16 @@ public class sort {
         }
     }
 
+    public myMap reverseSorted()
+    {   
+        myMap reverse = new myMap(); 
+        reverse = (myMap) originalMap.clone();
+        reverse.getMap().clear();
+        for(int i = originalMap.getMapSize()-1; i >=0; i--){
+            reverse.getMap().put(aux.get(i), sortedMap.getMap().get(aux.get(i)));
+        }
+        return reverse;
+    }
     public myMap getSortedMap(){
         return sortedMap;
     }
